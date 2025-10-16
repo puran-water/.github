@@ -46,11 +46,13 @@ Engineering drawings follow a database-first architecture where machine-readable
 
 ## Rationale
 
-Traditional engineering software requires human expertise to interpret results and navigate interfaces. Structured APIs allow AI agents to:
-1. Identify engineering problems from context
-2. Select appropriate calculation tools
-3. Execute deterministic computations
-4. Interpret results programmatically
-5. Chain operations across multiple domains
+Domain experts should spend their time exploring the full design space, solving complex problems, and anticipating edge cases that lead to failures. By orchestrating AI agents through structured APIs, engineers delegate routine calculations and documentation generation, freeing cognitive resources for higher-value activities.
+
+AI agents handle:
+1. Parametric design iterations across multiple operating conditions
+2. Generation of calculation reports and technical drawings
+3. Compliance documentation and regulatory submissions
+4. Integration of results across multiple analysis domains
+5. Version control and change tracking for engineering artifacts
 
 Git-compatible data formats (JSON, structured text) enable standard version control workflows for engineering artifacts traditionally locked in proprietary binary formats.
