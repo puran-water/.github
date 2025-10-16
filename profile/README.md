@@ -1,4 +1,4 @@
-# Puran Water
+![Puran Water](assets/logo.png)
 
 Wastewater process engineering tools designed for programmatic access by AI agents.
 
