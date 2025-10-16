@@ -28,7 +28,6 @@ Engineering drawings follow a database-first architecture where machine-readable
 
 ### Process Documentation
 - **dexpi-sfiles-mcp-server** - ISO 15926-compliant P&ID data models (DEXPI) and compact flowsheet notation (SFILES)
-- **pyDEXPI** - Python library for DEXPI standard implementation
 
 ### Compliance & Regulatory
 - **compliance-agent** - Automated monitoring of regulations (Federal Register, eCFR, CARB) and permit management (NPDES, Title V, RFS/LCFS)
