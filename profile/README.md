@@ -14,12 +14,15 @@ Engineering drawings follow a database-first architecture where machine-readable
 - **ro-design-mcp** - Reverse osmosis system optimization using WaterTAP framework with 67 manufacturer membrane models
 - **ix-design-mcp** - Ion exchange (SAC/WAC) vessel sizing with USEPA Gaines-Thomas equilibrium solver
 - **degasser-design-mcp** - Packed tower air stripper design using Perry's Handbook correlations and pH-dependent speciation
-- **adm1-mcp** - Anaerobic digestion modeling with ADM1 implementation via QSDsan
+- **anaerobic-design-mcp** - Anaerobic digester design using mADM1 (Modified ADM1) with 63-component model including P/S/Fe extensions for nutrient recovery via QSDsan
+- **aerobic-design-mcp** - Activated sludge design with mASM2d (Modified ASM2d) incorporating Monod kinetics, MLSS-dependent alpha factors, and mass-balance-based flowsheet selection
+- **primary-clarifier-mcp** - Primary clarifier design combining QSDsan state variable fractionation with chemical dosing calculations for coagulant and flocculant optimization
 
 ### Engineering Calculations
 - **fluids-mcp** - Pipe flow, control valve sizing (IEC 60534), and pump/compressor design
 - **heat-transfer-mcp** - Tank heat loss, heat exchanger sizing, insulation design with 390+ material database
 - **water-chemistry-mcp** - PHREEQC-based aqueous geochemistry for speciation, scaling, and chemical dosing
+- **corrosion-engineering-mcp** - Physics-based corrosion rate prediction with CO₂/H₂S corrosion models, galvanic series database, and PHREEQC integration for aqueous speciation
 
 ### CAE Integration
 - **autocad-mcp** - AutoLISP code generation for AutoCAD LT with ISA 5.1 P&ID symbol library
