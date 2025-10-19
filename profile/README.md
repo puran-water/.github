@@ -16,7 +16,7 @@ Engineering drawings follow a database-first architecture where machine-readable
 - **degasser-design-mcp** - Packed tower air stripper design using Perry's Handbook correlations and pH-dependent speciation
 - **anaerobic-design-mcp** - Anaerobic digester design using mADM1 (Modified ADM1) with 63-component model including P/S/Fe extensions for nutrient recovery via QSDsan
 - **aerobic-design-mcp** - Activated sludge design with mASM2d (Modified ASM2d) incorporating Monod kinetics, MLSS-dependent alpha factors, and mass-balance-based flowsheet selection
-- **primary-clarifier-mcp** - Primary clarifier design combining QSDsan state variable fractionation with chemical dosing calculations for coagulant and flocculant optimization
+- **primary-clarifier-mcp** - Primary clarifier design
 
 ### Engineering Calculations
 - **fluids-mcp** - Pipe flow, control valve sizing (IEC 60534), and pump/compressor design
