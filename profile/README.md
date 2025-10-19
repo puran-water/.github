@@ -48,7 +48,7 @@ Engineering drawings follow a database-first architecture where machine-readable
 
 ## Rationale
 
-Domain experts should spend their time exploring the full design space, solving complex problems, and anticipating edge cases that lead to failures. By orchestrating AI agents through structured APIs, engineers delegate routine calculations and documentation generation, freeing cognitive resources for higher-value activities.
+Domain experts should spend their time exploring the full design space, solving complex problems, and anticipating edge cases that lead to failures. By orchestrating AI agents through structured APIs, engineers delegate routine calculations and document generation, freeing cognitive resources for higher-value activities.
 
 AI agents handle:
 1. Parametric design iterations across multiple operating conditions
