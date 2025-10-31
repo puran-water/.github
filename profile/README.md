@@ -50,7 +50,7 @@ Engineering drawings follow a database-first architecture where machine-readable
 
 Engineering MCP servers generate **Markdown reports** with:
 - **Obsidian frontmatter** for metadata and searchability via Obsidian MCP server
-- **Mermaid diagrams** for process flowsheets and equipment schematics  
+- **Mermaid diagrams** for process flowsheets  
 - **LaTeX equations** for engineering calculations with symbolic notation
 
 Rationale:
