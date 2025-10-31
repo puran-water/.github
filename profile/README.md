@@ -46,6 +46,21 @@ Engineering drawings follow a database-first architecture where machine-readable
 - **Framework**: FastMCP for rapid MCP server development
 - **Validation**: Physics-based calculations with literature-sourced parameters rather than empirical approximations
 
+### Reporting
+
+Engineering MCP servers generate **Markdown reports** with:
+- **Obsidian frontmatter** for metadata and searchability via Obsidian MCP server
+- **Mermaid diagrams** for process flowsheets and equipment schematics  
+- **LaTeX equations** for engineering calculations with symbolic notation
+
+Rationale:
+1. **LLM-native format** - Markdown is the native "word processor" for AI agents, enabling seamless reading/writing without parsing overhead
+2. **Git version control** - Plain text reports are diffable, enabling standard version control workflows for design artifacts (track changes, rollbacks, blame)
+3. **Cross-platform readability** - Reports render in GitHub, VS Code, Obsidian, and any text editor without proprietary software
+4. **Programmatic organization** - Global Obsidian MCP server provides semantic search and organization across all design artifacts via frontmatter metadata
+
+This replaces traditional HTML/PDF reporting, which requires binary diff tools and lacks the compositional properties needed for AI-driven workflows.
+
 ## Rationale
 
 Domain experts should spend their time exploring the full design space, solving complex problems, and anticipating edge cases that lead to failures. By orchestrating AI agents through structured APIs, engineers delegate routine calculations and document generation, freeing cognitive resources for higher-value activities.
