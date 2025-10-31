@@ -14,7 +14,7 @@ Engineering drawings follow a database-first architecture where machine-readable
 - **ro-design-mcp** - Reverse osmosis system optimization using WaterTAP framework with 67 manufacturer membrane models
 - **ix-design-mcp** - Ion exchange (SAC/WAC) vessel sizing with USEPA Gaines-Thomas equilibrium solver
 - **degasser-design-mcp** - Packed tower air stripper design using Perry's Handbook correlations and pH-dependent speciation
-- **evaporator-design-mcp** - Industrial evaporator design (MVR/MVC/MEE) with three-tier architecture: heuristic sizing using consultant correlations, WaterTAP/watertap-reflo simulation for rigorous mass & energy balance, and economic costing with CAPEX/OPEX/LCOW analysis. Supports falling film and forced circulation configurations with PHREEQC speciation for high-TDS brines (25-35 wt%)
+- **evaporator-design-mcp** - Industrial evaporator design (MVR/MVC/MEE) with three-tier architecture: heuristic sizing using correlations, WaterTAP/watertap-reflo simulation for rigorous mass & energy balance, and economic costing with CAPEX/OPEX analysis. Supports falling film and forced circulation configurations with PHREEQC speciation for high-TDS brines (25-35 wt%)
 - **anaerobic-design-mcp** - Anaerobic digester design using mADM1 (Modified ADM1) with 63-component model including P/S/Fe extensions for nutrient recovery via QSDsan
 - **aerobic-design-mcp** - Activated sludge design with mASM2d (Modified ASM2d) incorporating Monod kinetics, MLSS-dependent alpha factors, and mass-balance-based flowsheet selection
 - **primary-clarifier-mcp** - Primary clarifier design
