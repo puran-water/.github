@@ -60,7 +60,7 @@ Rationale:
 3. **Cross-platform readability** - Reports render in GitHub, VS Code, Obsidian, and any text editor without proprietary software
 4. **Programmatic organization** - Global Obsidian MCP server provides semantic search and organization across all design artifacts via frontmatter metadata
 
-This replaces traditional HTML/PDF reporting, which requires binary diff tools and lacks the compositional properties needed for AI-driven workflows.
+This replaces traditional .docx/.xlsx reporting, which requires binary diff tools and lacks the compositional properties needed for AI-driven workflows.
 
 ## Rationale
 
