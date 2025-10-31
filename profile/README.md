@@ -46,7 +46,7 @@ Engineering drawings follow a database-first architecture where machine-readable
 - **Framework**: FastMCP for rapid MCP server development
 - **Validation**: Physics-based calculations with literature-sourced parameters rather than empirical approximations
 
-### Reporting
+## Reporting
 
 Engineering MCP servers generate **Markdown reports** with:
 - **Obsidian frontmatter** for metadata and searchability via Obsidian MCP server
