@@ -59,6 +59,9 @@ Rationale:
 2. **Git version control** - Plain text reports are diffable, enabling standard version control workflows for design artifacts (track changes, rollbacks, blame)
 3. **Cross-platform readability** - Reports render in GitHub, VS Code, Obsidian, and any text editor without proprietary software
 4. **Programmatic organization** - Global Obsidian MCP server provides semantic search and organization across all design artifacts via frontmatter metadata
+5. **Client deliverable conversion** - When client-facing deliverables require traditional formats, Pandoc converts Markdown reports to branded PDF, Word, or
+PowerPoint documents using custom templates. This preserves Markdown as the version-controlled source of truth while
+enabling professional formatting for external stakeholders.
 
 This replaces traditional .docx/.xlsx reporting, which requires binary diff tools and lacks the compositional properties needed for AI-driven workflows.
 
