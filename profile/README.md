@@ -66,17 +66,6 @@ Rationale:
 
 This replaces traditional .docx/.xlsx reporting, which requires binary diff tools and lacks the compositional properties needed for AI-driven workflows.
 
-### Client Deliverable Conversion
-
-When client-facing deliverables require traditional formats, Pandoc converts Markdown reports to branded PDF, Word, or
-PowerPoint documents using custom templates. This preserves Markdown as the version-controlled source of truth while
-enabling professional formatting for external stakeholders.
-
-\`\`\`bash
-# Example: Branded PDF with company template
-pandoc report.md -o report.pdf --template=company-template.tex --pdf-engine=xelatex
-\`\`\`
-
 ## Rationale
 
 Domain experts should spend their time exploring the full design space, solving complex problems, and anticipating edge cases that lead to failures. By orchestrating AI agents through structured APIs, engineers delegate routine calculations and document generation, freeing cognitive resources for higher-value activities.
