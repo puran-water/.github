@@ -36,6 +36,9 @@ Engineering drawings follow a database-first architecture where machine-readable
 ### Compliance & Regulatory
 - **compliance-agent** - Automated monitoring of regulations (Federal Register, eCFR, CARB) and permit management (NPDES, Title V, RFS/LCFS)
 
+### Knowledge Management
+- **knowledge-base-mcp** - Semantic search with atomic retrieval/ingestion tools exposed as MCP primitives. Agent-directed hybrid search (dense/sparse/rerank) allows composition of multi-step retrieval strategies. Ingestion tools capture both user-supplied tacit knowledge (O&M experience, troubleshooting insights, design heuristics) and insights synthesized from mechanistic modeling outputs, building institutional knowledge that persists beyond individual tenure.
+
 ### Business Tools
 - **lead-generation** - MCP servers for business development workflows
 
@@ -84,5 +87,7 @@ AI agents handle:
 3. Compliance documentation and regulatory submissions
 4. Integration of results across multiple analysis domains
 5. Version control and change tracking for engineering artifacts
+
+The **knowledge-base-mcp** server provides context retrieval for engineering calculations. Agents query baseline knowledge (textbooks, handbooks, standards) to inform tool selection and constraint formulation. Atomic ingestion tools allow upserting user-supplied tacit knowledge (operating experience, site-specific heuristics) and agent-synthesized insights from mechanistic modeling outputs. This creates a feedback loop where calculation results inform the knowledge base, enabling agents to explain designs with provenance-backed citations.
 
 Git-compatible data formats (JSON, structured text) enable standard version control workflows for engineering artifacts traditionally locked in proprietary binary formats.
