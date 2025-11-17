@@ -2,45 +2,64 @@
 
 Wastewater process engineering tools designed for programmatic access by AI agents.
 
-## Approach
+## Vision
+
+To create a plant-state-aware engineering orchestrator that autonomously generates end-to-end wastewater treatment plant designs—from an initial problem statement to a complete, converged set of engineering artifacts.
+
+This system is built on AI-native process tools (MCP servers) that create a compounding data flywheel, where insights from live digital twins continuously refine and validate the design heuristics of the entire ecosystem.
+
+## The Orchestrator Approach
+
+The end-goal is a "plant-state-aware" orchestrator that automates the core engineering, procurement, and construction (EPC) workflow:
+
+* Problem Parsing: An AI agent ingests an RFP, Basis of Design, or similar "problem statement" document.
+
+* Topology Suggestion: Leveraging the Knowledge Base MCP, the agent queries both textbook principles and tacit knowledge from a database of past projects (SFILES topologies + feed/discharge state variables). It then proposes an optimal process topology (as an SFILES string) for human-in-the-loop editing and approval.
+
+* Iterative Design: The orchestrator "walks" the approved process topology, calling the appropriate process unit MCP servers as tools. It passes the output "plant state" from one unit to the next, asserting mass balance and iterating recycle streams until the entire system converges.
+
+* Artifact Generation: The final, converged plant state and all intermediate MCP metadata are used to generate a full suite of engineering deliverables. This includes equipment lists, load lists, PFDs and P&IDs (expanded from the BFD SFILES), IO lists, instrument/line/valve schedules, process and instrument datasheets, and control narratives (complete with SCL code snippets).
+
+## The Digital Twin Flywheel
+
+This architecture is designed for a virtuous, positive feedback loop:
+
+* Digital Twinning: Each MCP server is built to function as a digital twin. By ingesting live plant data (via the TIA Portal MCP or other SCADA interfaces), it can model current-state operations against the original design basis in real-time.
+
+* Data Flywheel: The Knowledge Base MCP ingests and synthesizes insights from these active digital twins. Discrepancies between designed and actual performance are captured, analyzed, and fed back into the knowledge base as new, field-validated design heuristics.
+
+* Compounding Value: This creates a powerful data flywheel. The orchestrator's "first guess" for new designs becomes more intelligent and accurate with every plant deployed and every day a digital twin is active. This compounds institutional knowledge, de-risks new designs, and improves the underlying heuristics for the entire system.
+
+## Core Architecture
 
 These tools implement the Model Context Protocol (MCP), providing structured JSON interfaces for deterministic engineering calculations. AI agents can compose multi-step workflows by calling tools programmatically rather than requiring human operators to navigate graphical interfaces.
 
 Engineering drawings follow a database-first architecture where machine-readable data models (DEXPI for P&IDs, SFILES for BFDs/PFDs) generate visualizations. This inverts the traditional CAD workflow, enabling version control via git and automated diff operations on the underlying data structures.
 
-## Repositories
+## Repositories (status accounting based on README + code review)
 
-### Process Design
-- **ro-design-mcp** - Reverse osmosis system optimization using WaterTAP framework with 67 manufacturer membrane models
-- **ix-design-mcp** - Ion exchange (SAC/WAC) vessel sizing with USEPA Gaines-Thomas equilibrium solver
-- **degasser-design-mcp** - Packed tower air stripper design using Perry's Handbook correlations and pH-dependent speciation
-- **evaporator-design-mcp** - Industrial evaporator design (MVR/MVC/MEE) with three-tier architecture: heuristic sizing using correlations, WaterTAP/watertap-reflo simulation for rigorous mass & energy balance, and economic costing with CAPEX/OPEX analysis. Supports falling film and forced circulation configurations with PHREEQC speciation for high-TDS brines (25-35 wt%)
-- **anaerobic-design-mcp** - Anaerobic digester design using mADM1 (Modified ADM1) with 63-component model including P/S/Fe extensions for nutrient recovery via QSDsan
-- **aerobic-design-mcp** - Activated sludge design with mASM2d (Modified ASM2d) incorporating Monod kinetics, MLSS-dependent alpha factors, and mass-balance-based flowsheet selection
-- **primary-clarifier-mcp** - Primary clarifier design
+### Production-grade MCP servers
+- **dexpi-sfiles-mcp-server** (production) – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
+- **ro-design-mcp** (production) – Reverse osmosis design optimizer with hybrid simulator, PHREEQC chemistry, and WaterTAP costing; exposes tools for configuration, simulation, and defaults.
+- **ix-design-mcp** (production) – Ion exchange (SAC/WAC) sizing and simulation with Gaines-Thomas heuristics, PHREEQC breakthrough modeling, and WaterTAP cost analysis plus report generation.
+- **degasser-design-mcp** (production) – Packed tower air stripper design with PHREEQC speciation, HTU/NTU sizing, staged simulation, and WaterTAP/QSDsan costing.
+- **heat-transfer-mcp** (production) – Thermal analysis omnitools for tank/pipe heat loss, HX design, weather-driven sizing, and parameter sweeps with 390+ material database.
+- **fluids-mcp** (production) – Pipe flow, valve sizing (IEC 60534), pump/compressor design, parameter sweeps, and property lookups via CoolProp/Thermo/Fluids.
+- **water-chemistry-mcp** (production) – PHREEQC-based speciation, chemical addition/mixing, scaling analysis, and batch processing with CI-backed test/quality/integration workflows.
+- **knowledge-base-mcp** (production) – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features (advanced graph extraction remains partial/optional).
 
-### Engineering Calculations
-- **fluids-mcp** - Pipe flow, control valve sizing (IEC 60534), and pump/compressor design
-- **heat-transfer-mcp** - Tank heat loss, heat exchanger sizing, insulation design with 390+ material database
-- **water-chemistry-mcp** - PHREEQC-based aqueous geochemistry for speciation, scaling, and chemical dosing
-- **corrosion-engineering-mcp** - Physics-based corrosion rate prediction with CO₂/H₂S corrosion models, galvanic series database, and PHREEQC integration for aqueous speciation
+### Mature but environment-dependent MCP servers
+- **adm1-mcp** (stable core, external dependency) – ADM1/QSDsan anaerobic digestion modeling with Gemini-assisted feedstock parsing; requires Google API key and has limited automation coverage.
+- **autocad-mcp** (in development, Windows + AutoCAD LT required) – AutoLISP generation/execution with 600+ ISA P&ID symbols; depends on local AutoCAD LT runtime.
+- **mathcad-mcp** (in development, Windows-only) – MathCAD Prime COM automation for worksheet control and exports.
 
-### CAE Integration
-- **autocad-mcp** - AutoLISP code generation for AutoCAD LT with ISA 5.1 P&ID symbol library
-- **mathcad-mcp** - PTC MathCAD Prime COM automation for worksheet control
-- **tia-portal-mcp** - Siemens TIA Portal read-only interface for SCADA integration
-
-### Process Documentation
-- **dexpi-sfiles-mcp-server** - ISO 15926-compliant P&ID data models (DEXPI) and compact flowsheet notation (SFILES)
-
-### Compliance & Regulatory
-- **compliance-agent** - Automated monitoring of regulations (Federal Register, eCFR, CARB) and permit management (NPDES, Title V, RFS/LCFS)
-
-### Knowledge Management
-- **knowledge-base-mcp** - Semantic search with atomic retrieval/ingestion tools exposed as MCP primitives. Agent-directed hybrid search (dense/sparse/rerank) allows composition of multi-step retrieval strategies. Ingestion tools capture both user-supplied tacit knowledge (O&M experience, troubleshooting insights, design heuristics) and insights synthesized from mechanistic modeling outputs, building institutional knowledge that persists beyond individual tenure.
-
-### Business Tools
-- **lead-generation** - MCP servers for business development workflows
+### In development (private codebases not reviewed here)
+- **plant-state** – Orchestrator coordination layer for end-to-end plant-state-aware workflows.
+- **evaporator-design-mcp**, **anaerobic-design-mcp**, **aerobic-design-mcp**, **primary-clarification-mcp** – Advanced process unit models; private and still under active build-out.
+- **corrosion-engineering-mcp** – Physics-based corrosion prediction with PHREEQC coupling; private/in development.
+- **compliance-agent** – Regulatory monitoring and permit automation; private/in development.
+- **lead-generation**, **puran-website** – Business development tools and org site; private/in development.
+- **tia-portal-mcp** – Siemens TIA Portal read-only SCADA interface; private/in development.
 
 ## Technical Patterns
 
