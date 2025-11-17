@@ -14,11 +14,11 @@ The end-goal is a "plant-state-aware" orchestrator that automates the core proce
 
 * Problem Parsing: An AI agent ingests an RFP, Basis of Design, or similar "problem statement" document.
 
-* Topology Suggestion: Leveraging an internal repository of SFILES topologies + feed/discharge state variables, a set of process topologies can be proposed (as an SFILES string) for human-in-the-loop editing and approval.
+* Topology Suggestion: Leveraging an internal repository of SFILES topologies + feed/discharge state variables, a process topology for a given problem statement can be proposed for human-in-the-loop editing and approval.
 
 * Iterative Design: The orchestrator "walks" the approved process topology, calling the appropriate process unit MCP servers as tools. It passes the output "plant state" from one unit to the next, asserting mass balance and iterating recycle streams until the entire system converges.
 
-* Artifact Generation: The final, converged plant state and all intermediate MCP metadata are used to generate a full suite of engineering deliverables. This includes equipment lists, load lists, PFDs and P&IDs (expanded from the BFD SFILES), IO lists, instrument/line/valve schedules, process and instrument datasheets, and control narratives (complete with SCL code snippets).
+* Artifact Generation: The final, converged plant state and all intermediate MCP metadata are used to generate a full suite of engineering deliverables. This includes equipment lists, load lists, PFDs and P&IDs (expanded from the BFD SFILES), IO lists, instrument/line/valve schedules, process and instrument datasheets, and control narratives (complete with SCL code).
 
 ## The Digital Twin Flywheel
 
