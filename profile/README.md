@@ -38,7 +38,7 @@ Engineering drawings follow a database-first architecture where machine-readable
 
 ## Repositories
 
-### Production-grade MCP servers
+### Public (in development)
 - **dexpi-sfiles-mcp-server** (production) – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
 - **ro-design-mcp** (production) – Reverse osmosis design optimizer with hybrid simulator, PHREEQC chemistry, and WaterTAP costing; exposes tools for configuration, simulation, and defaults.
 - **ix-design-mcp** (production) – Ion exchange (SAC/WAC) sizing and simulation with Gaines-Thomas heuristics, PHREEQC breakthrough modeling, and WaterTAP cost analysis plus report generation.
@@ -48,12 +48,11 @@ Engineering drawings follow a database-first architecture where machine-readable
 - **water-chemistry-mcp** (production) – PHREEQC-based speciation, chemical addition/mixing, scaling analysis, and batch processing with CI-backed test/quality/integration workflows.
 - **knowledge-base-mcp** (production) – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features (advanced graph extraction remains partial/optional).
 
-### Mature but environment-dependent MCP servers
 - **adm1-mcp** (stable core, external dependency) – ADM1/QSDsan anaerobic digestion modeling with Gemini-assisted feedstock parsing; requires Google API key and has limited automation coverage.
 - **autocad-mcp** (in development, Windows + AutoCAD LT required) – AutoLISP generation/execution with 600+ ISA P&ID symbols; depends on local AutoCAD LT runtime.
 - **mathcad-mcp** (in development, Windows-only) – MathCAD Prime COM automation for worksheet control and exports.
 
-### In development (private codebases)
+### Private (in early development)
 - **plant-state** – Orchestrator coordination layer for end-to-end plant-state-aware workflows.
 - **evaporator-design-mcp**, **anaerobic-design-mcp**, **aerobic-design-mcp**, **primary-clarification-mcp** – Advanced process unit models; private and still under active build-out.
 - **corrosion-engineering-mcp** – Physics-based corrosion prediction with PHREEQC coupling; private/in development.
