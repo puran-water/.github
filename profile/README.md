@@ -24,11 +24,11 @@ The end-goal is a "plant-state-aware" orchestrator that automates the core proce
 
 This architecture is designed for a virtuous, positive feedback loop:
 
-* Digital Twinning: Each MCP server produces a mechanistic model of the process unit, which can serve as a basis for a "digital twin". By ingesting live plant data, it can model current-state operations versus mechanistic model predicted outputs and the mechanistic model can be improved considering non-idealities in the mechanistic model to reduce this error.
+* Digital Twinning: Each MCP server produces a mechanistic model of the process unit, which can serve as a basis for a digital twin. By ingesting live plant data and lab data (via integration with Ensaras's platform), actual performance can be compared with  mechanistic model predicted outputs and the improvements to both heuristic sizing and process modeling can be made to reduce the "actual versus predicted" delta.
 
-* Data Flywheel: The improved mechanistic model will inform better, more robust designs and capture / memorialized this tacit knowledge.
+* Data Flywheel: The improved mechanistic model will inform better, more robust designs and capture this tacit knowledge for future designs.
 
-* Compounding Value: This creates a powerful data flywheel. The orchestrator's "first guess" for new designs becomes more intelligent and accurate with every plant deployed and every day a digital twin is active. This compounds institutional knowledge, de-risks new designs, and improves the underlying heuristics and process modeling for the entire system.
+* Compounding Value: This creates a powerful data flywheel. The orchestrator's new designs becomes more intelligent (by incorporating performance data that improve heuristics, appropriately discount equipment vendor claims, and correct for non-idealities in mechanistic models) and accurate with every plant deployed and every day a digital twin is active. This compounds institutional knowledge, de-risks new designs, and improves the underlying heuristics and process modeling for the entire system.
 
 ## Core Architecture
 
