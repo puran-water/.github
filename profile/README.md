@@ -6,15 +6,15 @@ Wastewater process engineering tools designed for programmatic access by AI agen
 
 To create a plant-state-aware engineering orchestrator that autonomously generates end-to-end wastewater treatment plant designs—from an initial problem statement to a complete, converged set of engineering artifacts.
 
-This system is built on AI-native process tools (MCP servers) that create a compounding data flywheel, where insights from live digital twins continuously refine and validate the design heuristics of the entire ecosystem.
+This system is built on AI-native process tools (MCP servers) that deliver designs with process unit sizing based on heuristics followed by mechanistic modelling to refine the design.  The mechanistic models can also serve as digital twins for the operating asset, which can create a compounding data flywheel, where insights from live digital twins continuously refine and validate the design heuristics of the entire ecosystem.
 
 ## The Orchestrator Approach
 
-The end-goal is a "plant-state-aware" orchestrator that automates the core engineering, procurement, and construction (EPC) workflow:
+The end-goal is a "plant-state-aware" orchestrator that automates the core process engineering workflow:
 
 * Problem Parsing: An AI agent ingests an RFP, Basis of Design, or similar "problem statement" document.
 
-* Topology Suggestion: Leveraging the Knowledge Base MCP, the agent queries both textbook principles and tacit knowledge from a database of past projects (SFILES topologies + feed/discharge state variables). It then proposes an optimal process topology (as an SFILES string) for human-in-the-loop editing and approval.
+* Topology Suggestion: Leveraging an internal repository of SFILES topologies + feed/discharge state variables, a set of process topologies can be proposed (as an SFILES string) for human-in-the-loop editing and approval.
 
 * Iterative Design: The orchestrator "walks" the approved process topology, calling the appropriate process unit MCP servers as tools. It passes the output "plant state" from one unit to the next, asserting mass balance and iterating recycle streams until the entire system converges.
 
@@ -24,11 +24,11 @@ The end-goal is a "plant-state-aware" orchestrator that automates the core engin
 
 This architecture is designed for a virtuous, positive feedback loop:
 
-* Digital Twinning: Each MCP server is built to function as a digital twin. By ingesting live plant data (via the TIA Portal MCP or other SCADA interfaces), it can model current-state operations against the original design basis in real-time.
+* Digital Twinning: Each MCP server produces a mechanistic model of the process unit, which can serve as a basis for a "digital twin". By ingesting live plant data, it can model current-state operations versus mechanistic model predicted outputs and the mechanistic model can be improved considering non-idealities in the mechanistic model to reduce this error.
 
-* Data Flywheel: The Knowledge Base MCP ingests and synthesizes insights from these active digital twins. Discrepancies between designed and actual performance are captured, analyzed, and fed back into the knowledge base as new, field-validated design heuristics.
+* Data Flywheel: The improved mechanistic model will inform better, more robust designs and capture / memorialized this tacit knowledge.
 
-* Compounding Value: This creates a powerful data flywheel. The orchestrator's "first guess" for new designs becomes more intelligent and accurate with every plant deployed and every day a digital twin is active. This compounds institutional knowledge, de-risks new designs, and improves the underlying heuristics for the entire system.
+* Compounding Value: This creates a powerful data flywheel. The orchestrator's "first guess" for new designs becomes more intelligent and accurate with every plant deployed and every day a digital twin is active. This compounds institutional knowledge, de-risks new designs, and improves the underlying heuristics and process modeling for the entire system.
 
 ## Core Architecture
 
@@ -53,12 +53,11 @@ Engineering drawings follow a database-first architecture where machine-readable
 - **autocad-mcp** (in development, Windows + AutoCAD LT required) – AutoLISP generation/execution with 600+ ISA P&ID symbols; depends on local AutoCAD LT runtime.
 - **mathcad-mcp** (in development, Windows-only) – MathCAD Prime COM automation for worksheet control and exports.
 
-### In development (private codebases not reviewed here)
+### In development (private codebases)
 - **plant-state** – Orchestrator coordination layer for end-to-end plant-state-aware workflows.
 - **evaporator-design-mcp**, **anaerobic-design-mcp**, **aerobic-design-mcp**, **primary-clarification-mcp** – Advanced process unit models; private and still under active build-out.
 - **corrosion-engineering-mcp** – Physics-based corrosion prediction with PHREEQC coupling; private/in development.
 - **compliance-agent** – Regulatory monitoring and permit automation; private/in development.
-- **lead-generation**, **puran-website** – Business development tools and org site; private/in development.
 - **tia-portal-mcp** – Siemens TIA Portal read-only SCADA interface; private/in development.
 
 ## Technical Patterns
