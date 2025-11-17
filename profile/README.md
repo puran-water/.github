@@ -39,18 +39,14 @@ Engineering drawings follow a database-first architecture where machine-readable
 ## Repositories
 
 ### Public (in development)
-- **dexpi-sfiles-mcp-server** (production) – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
-- **ro-design-mcp** (production) – Reverse osmosis design optimizer with hybrid simulator, PHREEQC chemistry, and WaterTAP costing; exposes tools for configuration, simulation, and defaults.
-- **ix-design-mcp** (production) – Ion exchange (SAC/WAC) sizing and simulation with Gaines-Thomas heuristics, PHREEQC breakthrough modeling, and WaterTAP cost analysis plus report generation.
-- **degasser-design-mcp** (production) – Packed tower air stripper design with PHREEQC speciation, HTU/NTU sizing, staged simulation, and WaterTAP/QSDsan costing.
-- **heat-transfer-mcp** (production) – Thermal analysis omnitools for tank/pipe heat loss, HX design, weather-driven sizing, and parameter sweeps with 390+ material database.
-- **fluids-mcp** (production) – Pipe flow, valve sizing (IEC 60534), pump/compressor design, parameter sweeps, and property lookups via CoolProp/Thermo/Fluids.
-- **water-chemistry-mcp** (production) – PHREEQC-based speciation, chemical addition/mixing, scaling analysis, and batch processing with CI-backed test/quality/integration workflows.
-- **knowledge-base-mcp** (production) – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features (advanced graph extraction remains partial/optional).
-
-- **adm1-mcp** (stable core, external dependency) – ADM1/QSDsan anaerobic digestion modeling with Gemini-assisted feedstock parsing; requires Google API key and has limited automation coverage.
-- **autocad-mcp** (in development, Windows + AutoCAD LT required) – AutoLISP generation/execution with 600+ ISA P&ID symbols; depends on local AutoCAD LT runtime.
-- **mathcad-mcp** (in development, Windows-only) – MathCAD Prime COM automation for worksheet control and exports.
+- **dexpi-sfiles-mcp-server** – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
+- **ro-design-mcp** – Reverse osmosis design optimizer with hybrid simulator, PHREEQC chemistry, and WaterTAP costing; exposes tools for configuration, simulation, and defaults.
+- **ix-design-mcp** – Ion exchange (SAC/WAC) sizing and simulation with Gaines-Thomas heuristics, PHREEQC breakthrough modeling, and WaterTAP cost analysis plus report generation.
+- **degasser-design-mcp** – Packed tower air stripper design with PHREEQC speciation, HTU/NTU sizing, staged simulation, and WaterTAP/QSDsan costing.
+- **heat-transfer-mcp** – Thermal analysis omnitools for tank/pipe heat loss, HX design, weather-driven sizing, and parameter sweeps with 390+ material database.
+- **fluids-mcp** – Pipe flow, valve sizing (IEC 60534), pump/compressor design, parameter sweeps, and property lookups via CoolProp/Thermo/Fluids.
+- **water-chemistry-mcp** – PHREEQC-based speciation, chemical addition/mixing, scaling analysis, and batch processing with CI-backed test/quality/integration workflows.
+- **knowledge-base-mcp** – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features (advanced graph extraction remains partial/optional).
 
 ### Private (in early development)
 - **plant-state** – Orchestrator coordination layer for end-to-end plant-state-aware workflows.
