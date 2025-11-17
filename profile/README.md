@@ -4,9 +4,9 @@ Wastewater process engineering tools designed for programmatic access by AI agen
 
 ## Vision
 
-To create a plant-state-aware engineering orchestrator that autonomously generates end-to-end wastewater treatment plant designs—from an initial problem statement to a complete, converged set of engineering artifacts.
+To create a plant-state-aware engineering orchestrator that generates (with human-in-the-loop gating) end-to-end wastewater treatment plant designs and mechanistic models from an initial problem statement to a complete, converged set of engineering artifacts.
 
-This system is built on AI-native process tools (MCP servers) that deliver designs with process unit sizing based on heuristics followed by mechanistic modelling to refine the design.  The mechanistic models can also serve as digital twins for the operating asset, which can create a compounding data flywheel, where insights from live digital twins continuously refine and validate the design heuristics of the entire ecosystem.
+This system is built on AI-native process tools (MCP servers) that deliver designs with process unit sizing based on heuristics and refined by mechanistic models.  The mechanistic models can also serve as digital twins for the operating asset, which can create a compounding data flywheel, where insights from live digital twins continuously refine and validate the design heuristics of the entire ecosystem.
 
 ## The Orchestrator Approach
 
