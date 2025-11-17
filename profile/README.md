@@ -36,7 +36,7 @@ These tools implement the Model Context Protocol (MCP), providing structured JSO
 
 Engineering drawings follow a database-first architecture where machine-readable data models (DEXPI for P&IDs, SFILES for BFDs/PFDs) generate visualizations. This inverts the traditional CAD workflow, enabling version control via git and automated diff operations on the underlying data structures.
 
-## Repositories (status accounting based on README + code review)
+## Repositories
 
 ### Production-grade MCP servers
 - **dexpi-sfiles-mcp-server** (production) – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
