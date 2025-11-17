@@ -58,7 +58,8 @@ Engineering drawings follow a database-first architecture where machine-readable
 ## Technical Patterns
 
 - **Aqueous chemistry**: PHREEQC via PhreeqPython for thermodynamically rigorous water chemistry
-- **Process costing**: WaterTAP integration for CAPEX/OPEX analysis and levelized cost calculations
+- **Biological process modeling**: QSDsan for aerobic (mASM2d) and anaerobic (mADM1) process modeling with validated kinetics and stoichiometry 
+- **Process costing**: Integration wjth public costing databases (QSDsan, WaterTAP, EPA) for CAPEX/OPEX analysis and life cycle cost calculations
 - **Thermodynamic properties**: CoolProp, Thermo, and Fluids libraries with NIST-validated correlations
 - **Framework**: FastMCP for rapid MCP server development
 - **Validation**: Physics-based calculations with literature-sourced parameters rather than empirical approximations
