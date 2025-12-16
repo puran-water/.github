@@ -2,6 +2,17 @@
 
 Wastewater process engineering tools designed for programmatic access by AI agents.
 
+## Core Principles
+
+These tools are built on four foundational commitments:
+
+| Principle | Rationale |
+|-----------|-----------|
+| **Open-Source Stack** | All dependencies are freely available. No proprietary CAD, process simulation, or engineering software licenses required. Enables reproducibility and community contribution. |
+| **Machine-Readable Formats** | P&IDs as DEXPI XML, process flows as SFILES text, calculations as JSON, reports as Markdown. No binary blobs. |
+| **Git-Native Workflows** | All artifacts are text-diffable. Track changes, rollback errors, review PRs on engineering deliverables like code. |
+| **Physics-Based Calculations** | Deterministic correlations from literature and reputable, open-source simulation engines, not black-box approximations. Full auditability for safety-critical systems. |
+
 ## Vision
 
 To create a plant-state-aware engineering orchestrator that generates (with human-in-the-loop gating) end-to-end wastewater treatment plant designs and mechanistic models from an initial problem statement to a complete, converged set of engineering artifacts.
@@ -38,28 +49,48 @@ Engineering drawings follow a database-first architecture where machine-readable
 
 ## Repositories
 
-### Public (in development)
-- **dexpi-sfiles-mcp-server** – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
+### Foundational Tools
+- **fluids-mcp** – Pipe flow, valve sizing (IEC 60534), pump/compressor design, parameter sweeps, and property lookups via CoolProp/Thermo/Fluids.
+- **heat-transfer-mcp** – Thermal analysis omnitools for tank/pipe heat loss, HX design, weather-driven sizing, and parameter sweeps with 390+ material database.
+- **water-chemistry-mcp** – PHREEQC-based speciation, chemical addition/mixing, scaling analysis, and batch processing with CI-backed test/quality/integration workflows.
+
+### Process Unit Design
 - **ro-design-mcp** – Reverse osmosis design optimizer with hybrid simulator, PHREEQC chemistry, and WaterTAP costing; exposes tools for configuration, simulation, and defaults.
 - **ix-design-mcp** – Ion exchange (SAC/WAC) sizing and simulation with Gaines-Thomas heuristics, PHREEQC breakthrough modeling, and WaterTAP cost analysis plus report generation.
 - **degasser-design-mcp** – Packed tower air stripper design with PHREEQC speciation, HTU/NTU sizing, staged simulation, and WaterTAP/QSDsan costing.
-- **heat-transfer-mcp** – Thermal analysis omnitools for tank/pipe heat loss, HX design, weather-driven sizing, and parameter sweeps with 390+ material database.
-- **fluids-mcp** – Pipe flow, valve sizing (IEC 60534), pump/compressor design, parameter sweeps, and property lookups via CoolProp/Thermo/Fluids.
-- **water-chemistry-mcp** – PHREEQC-based speciation, chemical addition/mixing, scaling analysis, and batch processing with CI-backed test/quality/integration workflows.
-- **knowledge-base-mcp** – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features (advanced graph extraction remains partial/optional).
+- **adm1-mcp** – Anaerobic digestion simulation: feedstock-to-ADM1 parameter translation, 35+ processes via QSDsan, pH with inhibition factors, COD removal, and methane yield reporting.
+- **corrosion-engineering-mcp** – Physics-based corrosion prediction: CO₂/H₂S sweet/sour corrosion (NORSOK M-506), galvanic series (42 materials), dual-tier pitting assessment (PREN + Butler-Volmer), and PHREEQC integration.
 
-### Private (in early development)
+### Engineering Drawings & Site Layout
+- **dexpi-sfiles-mcp-server** – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
+- **freecad-pid-workbench** – FreeCAD workbench for P&ID editing: import/export DEXPI Proteus XML 4.2, visualize piping topology with 272 equipment classes, ELK orthogonal layout, and round-trip fidelity for human-in-the-loop review of AI-generated diagrams.
+- **site-fit-mcp-server** – Site layout optimization: constraint-based facility layouts using OR-Tools CP-SAT with NoOverlap2D, A* road routing, NFPA 820 hazardous area classification, and SFILES2 topology integration with GeoJSON export.
+
+> **Note:** `freecad-pid-workbench` represents the strategic direction for P&ID editing—fully open-source FreeCAD with machine-readable DEXPI XML, enabling git-based version control and AI-agent-accessible diagram editing.
+
+### Knowledge Infrastructure
+- **knowledge-base-mcp** – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features.
+
+### Private (in development)
 - **plant-state** – Orchestrator coordination layer for end-to-end plant-state-aware workflows.
 - **evaporator-design-mcp**, **anaerobic-design-mcp**, **aerobic-design-mcp**, **primary-clarification-mcp** – Advanced process unit models; private and still under active build-out.
-- **corrosion-engineering-mcp** – Physics-based corrosion prediction with PHREEQC coupling; private/in development.
 - **compliance-agent** – Regulatory monitoring and permit automation; private/in development.
 - **tia-portal-mcp** – Siemens TIA Portal read-only SCADA interface; private/in development.
+
+### Proof of Concept
+
+Early explorations that demonstrated MCP feasibility with industry-standard proprietary tools:
+
+- **autocad-mcp** – AutoCAD LT integration via AutoLISP. Informed the development of `freecad-pid-workbench`, which achieves similar P&ID editing capabilities with open-source FreeCAD and machine-readable DEXPI XML.
+- **mathcad-mcp** – MathCAD Prime COM automation. Explored programmatic calculation workflows; insights shaped the Markdown + LaTeX reporting approach now used across MCP servers.
+
+These integrations validated core MCP patterns and informed the architecture of their open-source counterparts.
 
 ## Technical Patterns
 
 - **Aqueous chemistry**: PHREEQC via PhreeqPython for thermodynamically rigorous water chemistry
-- **Biological process modeling**: QSDsan for aerobic (mASM2d) and anaerobic (mADM1) process modeling with validated kinetics and stoichiometry 
-- **Process costing**: Integration wjth public costing databases (QSDsan, WaterTAP, EPA) for CAPEX/OPEX analysis and life cycle cost calculations
+- **Biological process modeling**: QSDsan for aerobic (mASM2d) and anaerobic (mADM1) process modeling with validated kinetics and stoichiometry
+- **Process costing**: Integration with public costing databases (QSDsan, WaterTAP, EPA) for CAPEX/OPEX analysis and life cycle cost calculations
 - **Thermodynamic properties**: CoolProp, Thermo, and Fluids libraries with NIST-validated correlations
 - **Framework**: FastMCP for rapid MCP server development
 - **Validation**: Physics-based calculations with literature-sourced parameters rather than empirical approximations
@@ -82,15 +113,11 @@ This replaces traditional .docx/.xlsx reporting, which requires binary diff tool
 
 ## Rationale
 
-Domain experts should spend their time exploring the full design space, solving complex problems, and anticipating edge cases that lead to failures. By orchestrating AI agents through structured APIs, engineers delegate routine calculations and document generation, freeing cognitive resources for higher-value activities.
+Domain experts should explore design space, solve complex problems, and anticipate edge cases—not perform routine calculations. AI agents handle:
+- Parametric iterations across operating conditions
+- Calculation reports and technical drawings
+- Compliance documentation
+- Cross-domain result integration
+- Version-controlled engineering artifacts
 
-AI agents handle:
-1. Parametric design iterations across multiple operating conditions
-2. Generation of calculation reports and technical drawings
-3. Compliance documentation and regulatory submissions
-4. Integration of results across multiple analysis domains
-5. Version control and change tracking for engineering artifacts
-
-The **knowledge-base-mcp** server provides context retrieval for engineering calculations. Agents query baseline knowledge (textbooks, handbooks, standards) to inform tool selection and constraint formulation. Atomic ingestion tools allow upserting user-supplied tacit knowledge (operating experience, site-specific heuristics) and agent-synthesized insights from mechanistic modeling outputs. This creates a feedback loop where calculation results inform the knowledge base, enabling agents to explain designs with provenance-backed citations.
-
-Git-compatible data formats (JSON, structured text) enable standard version control workflows for engineering artifacts traditionally locked in proprietary binary formats.
+The **knowledge-base-mcp** provides context retrieval, enabling agents to explain designs with provenance-backed citations.
