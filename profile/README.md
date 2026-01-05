@@ -1,123 +1,188 @@
 ![Puran Water](assets/logo.png)
 
-Wastewater process engineering tools designed for programmatic access by AI agents.
+# Puran Water
 
-## Core Principles
+**Auditable, agent-native industrial engineering infrastructure.**
 
-These tools are built on four foundational commitments:
+CI pipelines for engineering artifacts. Change one parameter, reconcile everything.
 
-| Principle | Rationale |
-|-----------|-----------|
-| **Open-Source Stack** | All dependencies are freely available. No proprietary CAD, process simulation, or engineering software licenses required. Enables reproducibility and community contribution. |
-| **Machine-Readable Formats** | P&IDs as DEXPI XML, process flows as SFILES text, calculations as JSON, reports as Markdown. No binary blobs. |
-| **Git-Native Workflows** | All artifacts are text-diffable. Track changes, rollback errors, review PRs on engineering deliverables like code. |
-| **Physics-Based Calculations** | Deterministic correlations from literature and reputable, open-source simulation engines, not black-box approximations. Full auditability for safety-critical systems. |
+---
+
+## The Problem
+
+When an engineer updates a basis of design parameter, every downstream calculation must be reconciled—equipment sizing, hydraulic profiles, control setpoints, P&IDs.
+
+This currently requires **3-4 disciplines, hours of meetings, and manual tracking**. Changes still get missed.
+
+## The Solution
+
+Machine-readable artifacts + physics-based validators = **closed-loop iteration**.
+
+```
+Basis of Design changes (e.g., influent COD)
+    ↓
+Agent walks process topology
+    ↓
+Each MCP re-simulates with upstream state
+    ↓
+Convergence check (mass balance, constraints)
+    ↓
+ALL downstream artifacts regenerated
+    ↓
+Git diff shows every impacted file
+    ↓
+Engineer reviews and approves
+```
+
+This is `make` for engineering. Change one parameter, recompute the dependency graph.
+
+---
+
+## Three Pillars
+
+| Pillar | Why It Matters |
+|--------|----------------|
+| **Open Protocols** | MCP is a vendor-neutral open standard under the [Agentic AI Foundation](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation). Expose a tool once; use it across Claude, ChatGPT, Cursor, Copilot. |
+| **Machine-Readable Artifacts** | DEXPI XML (P&IDs), SFILES (flowsheets), JSON (calculations), Markdown (reports). Git-diffable, agent-editable, no parsing overhead. |
+| **Open-Source Stack** | PHREEQC, QSDsan, CoolProp, FreeCAD, OR-Tools. Full automation surface area. We bridge to proprietary tools when needed. |
+
+---
+
+## Open Source MCP Servers
+
+Production-ready tools with physics-based validation.
+
+<details>
+<summary><strong>Engineering Foundations</strong></summary>
+
+| Server | Purpose | Maturity |
+|--------|---------|----------|
+| [fluids-mcp](https://github.com/puran-water/fluids-mcp) | Pipe flow, valve sizing (IEC 60534), 120+ fluids | Standards-compliant |
+| [heat-transfer-mcp](https://github.com/puran-water/heat-transfer-mcp) | Tank/pipe heat loss, HX sizing, 390+ materials | Weather-driven sizing |
+| [water-chemistry-mcp](https://github.com/puran-water/water-chemistry-mcp) | PHREEQC speciation, dosing, scaling | CI-backed validation |
+| [corrosion-engineering-mcp](https://github.com/puran-water/corrosion-engineering-mcp) | CO₂/H₂S corrosion (NORSOK M-506), 42 materials | Physics-based |
+
+</details>
+
+<details>
+<summary><strong>Process Unit Design</strong></summary>
+
+| Server | Purpose | Maturity |
+|--------|---------|----------|
+| [ro-design-mcp](https://github.com/puran-water/ro-design-mcp) | RO optimization, 67 membranes, PHREEQC chemistry | WaterTAP costing |
+| [ix-design-mcp](https://github.com/puran-water/ix-design-mcp) | Ion exchange sizing, breakthrough modeling | Gaines-Thomas + PHREEQC |
+| [degasser-design-mcp](https://github.com/puran-water/degasser-design-mcp) | Packed tower air stripper, HTU/NTU sizing | Perry's Handbook |
+| [adm1-mcp](https://github.com/puran-water/adm1-mcp) | Anaerobic digestion, 35+ processes | QSDsan validated |
+| [site-fit-mcp-server](https://github.com/puran-water/site-fit-mcp-server) | Site layout, OR-Tools CP-SAT, NFPA 820 | Constraint-based |
+
+</details>
+
+<details>
+<summary><strong>Engineering Artifacts</strong></summary>
+
+| Server | Purpose | Maturity |
+|--------|---------|----------|
+| [dexpi-sfiles-mcp-server](https://github.com/puran-water/dexpi-sfiles-mcp-server) | P&ID (DEXPI XML) + flowsheet (SFILES2) | **768 tests**, ACID, ISO 15926 |
+| [freecad-pid-workbench](https://github.com/puran-water/freecad-pid-workbench) | Human-in-the-loop P&ID editing | 272 equipment classes |
+| [knowledge-base-mcp](https://github.com/puran-water/knowledge-base-mcp) | RAG with provenance-backed citations | Hybrid dense/sparse |
+
+</details>
+
+<details>
+<summary><strong>Proprietary Tool Bridges</strong></summary>
+
+| Server | Purpose | Note |
+|--------|---------|------|
+| [autocad-mcp](https://github.com/puran-water/autocad-mcp) | AutoCAD LT via AutoLISP | 600+ ISA 5.1 symbols |
+| [mathcad-mcp](https://github.com/puran-water/mathcad-mcp) | MathCAD Prime COM automation | Unit-aware |
+
+Strategic direction is open-source FreeCAD. These bridges exist for integration with existing workflows.
+
+</details>
+
+---
 
 ## Vision
 
-To create a plant-state-aware engineering orchestrator that generates (with human-in-the-loop gating) end-to-end wastewater treatment plant designs and mechanistic models from an initial problem statement to a complete, converged set of engineering artifacts.
+To create a plant-state-aware engineering orchestrator that generates end-to-end wastewater treatment plant designs and mechanistic models—from problem statement to converged engineering artifacts—with human-in-the-loop gating at each stage.
 
-This system is built on AI-native process tools (MCP servers) that deliver designs with process unit sizing based on heuristics and refined by mechanistic models.  The mechanistic models can also serve as digital twins for the operating asset, which can create a compounding data flywheel, where insights from live digital twins continuously refine and validate the design heuristics of the entire ecosystem.
+<details>
+<summary><strong>The Orchestrator Approach</strong></summary>
 
-## The Orchestrator Approach
+We are building plant-state-aware orchestrators that compose MCP servers into end-to-end engineering workflows.
 
-The end-goal is a "plant-state-aware" orchestrator that automates the core process engineering workflow:
+The orchestrator walks approved process topologies, calling process unit MCPs as tools, passing output state from one unit to the next, asserting mass balance and iterating recycle streams until convergence.
 
-* Problem Parsing: An AI agent ingests an RFP, Basis of Design, or similar "problem statement" document.
+Final artifacts include equipment lists, PFDs/P&IDs, IO lists, instrument schedules, datasheets, and control narratives.
 
-* Topology Suggestion: Leveraging an internal repository of SFILES topologies + feed/discharge state variables, a process topology for a given problem statement can be proposed for human-in-the-loop editing and approval.
+</details>
 
-* Iterative Design: The orchestrator "walks" the approved process topology, calling the appropriate process unit MCP servers as tools. It passes the output "plant state" from one unit to the next, asserting mass balance and iterating recycle streams until the entire system converges.
+<details>
+<summary><strong>The Digital Twin Flywheel</strong></summary>
 
-* Artifact Generation: The final, converged plant state and all intermediate MCP metadata are used to generate a full suite of engineering deliverables. This includes equipment lists, load lists, PFDs and P&IDs (expanded from the BFD SFILES), IO lists, instrument/line/valve schedules, process and instrument datasheets, and control narratives (complete with SCL code).
+Mechanistic models produced by MCP servers can serve as digital twins. By comparing operational data against model predictions, we continuously refine both sizing heuristics and process models.
 
-## The Digital Twin Flywheel
+This creates compounding institutional knowledge: orchestrator designs become more intelligent and accurate with every plant deployed and every day a digital twin is active.
 
-This architecture is designed for a virtuous, positive feedback loop:
+</details>
 
-* Digital Twinning: Each MCP server produces a mechanistic model of the process unit, which can serve as a basis for a digital twin. By ingesting live plant data and lab data (via integration with Ensaras's platform), actual performance can be compared with  mechanistic model predicted outputs and the improvements to both heuristic sizing and process modeling can be made to reduce the "actual versus predicted" delta.
+---
 
-* Data Flywheel: The improved mechanistic model will inform better, more robust designs and capture this tacit knowledge for future designs.
+## Beyond Open Source
 
-* Compounding Value: This creates a powerful data flywheel. The orchestrator's new designs becomes more intelligent (by incorporating performance data that improve heuristics, appropriately discount equipment vendor claims, and correct for non-idealities in mechanistic models) and accurate with every plant deployed and every day a digital twin is active. This compounds institutional knowledge, de-risks new designs, and improves the underlying heuristics and process modeling for the entire system.
+Additional capabilities in development:
+- Advanced process units (biological treatment, evaporation, clarification)
+- Workflow orchestration (plant-state tracking, design automation)
+- Compliance intelligence (regulatory monitoring, permit workflows)
+- Industrial integration (SCADA connectivity)
 
-## Core Architecture
+**Interested in early access?** Contact: opensource@puranwater.com
 
-These tools implement the Model Context Protocol (MCP), providing structured JSON interfaces for deterministic engineering calculations. AI agents can compose multi-step workflows by calling tools programmatically rather than requiring human operators to navigate graphical interfaces.
+---
 
-Engineering drawings follow a database-first architecture where machine-readable data models (DEXPI for P&IDs, SFILES for BFDs/PFDs) generate visualizations. This inverts the traditional CAD workflow, enabling version control via git and automated diff operations on the underlying data structures.
+<details>
+<summary><strong>Technical Stack</strong></summary>
 
-## Repositories
+| Component | Technology |
+|-----------|------------|
+| Aqueous chemistry | PHREEQC via PhreeqPython |
+| Biological modeling | QSDsan (mASM2d, mADM1) |
+| Process costing | WaterTAP, QSDsan, EPA databases |
+| Thermodynamics | CoolProp, Thermo, Fluids (NIST-validated) |
+| Optimization | OR-Tools (CP-SAT solver) |
+| Framework | FastMCP |
+| Reports | Markdown + Obsidian frontmatter + LaTeX |
 
-### Foundational Tools
-- **fluids-mcp** – Pipe flow, valve sizing (IEC 60534), pump/compressor design, parameter sweeps, and property lookups via CoolProp/Thermo/Fluids.
-- **heat-transfer-mcp** – Thermal analysis omnitools for tank/pipe heat loss, HX design, weather-driven sizing, and parameter sweeps with 390+ material database.
-- **water-chemistry-mcp** – PHREEQC-based speciation, chemical addition/mixing, scaling analysis, and batch processing with CI-backed test/quality/integration workflows.
+</details>
 
-### Process Unit Design
-- **ro-design-mcp** – Reverse osmosis design optimizer with hybrid simulator, PHREEQC chemistry, and WaterTAP costing; exposes tools for configuration, simulation, and defaults.
-- **ix-design-mcp** – Ion exchange (SAC/WAC) sizing and simulation with Gaines-Thomas heuristics, PHREEQC breakthrough modeling, and WaterTAP cost analysis plus report generation.
-- **degasser-design-mcp** – Packed tower air stripper design with PHREEQC speciation, HTU/NTU sizing, staged simulation, and WaterTAP/QSDsan costing.
-- **adm1-mcp** – Anaerobic digestion simulation: feedstock-to-ADM1 parameter translation, 35+ processes via QSDsan, pH with inhibition factors, COD removal, and methane yield reporting.
-- **corrosion-engineering-mcp** – Physics-based corrosion prediction: CO₂/H₂S sweet/sour corrosion (NORSOK M-506), galvanic series (42 materials), dual-tier pitting assessment (PREN + Butler-Volmer), and PHREEQC integration.
+<details>
+<summary><strong>Core Principles</strong></summary>
 
-### Engineering Drawings & Site Layout
-- **dexpi-sfiles-mcp-server** – ISO 15926-compliant P&ID + SFILES BFD/PFD tooling with consolidated omnitools, pyDEXPI/component coverage, Proteus XML export, and Git-native persistence.
-- **freecad-pid-workbench** – FreeCAD workbench for P&ID editing: import/export DEXPI Proteus XML 4.2, visualize piping topology with 272 equipment classes, ELK orthogonal layout, and round-trip fidelity for human-in-the-loop review of AI-generated diagrams.
-- **site-fit-mcp-server** – Site layout optimization: constraint-based facility layouts using OR-Tools CP-SAT with NoOverlap2D, A* road routing, NFPA 820 hazardous area classification, and SFILES2 topology integration with GeoJSON export.
+| Principle | Rationale |
+|-----------|-----------|
+| **Open-Source Stack** | All dependencies freely available. No proprietary licenses required. |
+| **Machine-Readable Formats** | P&IDs as DEXPI XML, flows as SFILES, calculations as JSON. No binary blobs. |
+| **Git-Native Workflows** | All artifacts text-diffable. Track changes, rollback, PR review on engineering. |
+| **Physics-Based Calculations** | Deterministic correlations from literature. Full auditability for safety-critical systems. |
 
-> **Note:** `freecad-pid-workbench` represents the strategic direction for P&ID editing—fully open-source FreeCAD with machine-readable DEXPI XML, enabling git-based version control and AI-agent-accessible diagram editing.
+</details>
 
-### Knowledge Infrastructure
-- **knowledge-base-mcp** – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features.
-
-### Private (in development)
-- **plant-state** – Orchestrator coordination layer for end-to-end plant-state-aware workflows.
-- **evaporator-design-mcp**, **anaerobic-design-mcp**, **aerobic-design-mcp**, **primary-clarification-mcp** – Advanced process unit models; private and still under active build-out.
-- **compliance-agent** – Regulatory monitoring and permit automation; private/in development.
-- **tia-portal-mcp** – Siemens TIA Portal read-only SCADA interface; private/in development.
-
-### Proof of Concept
-
-Early explorations that demonstrated MCP feasibility with industry-standard proprietary tools:
-
-- **autocad-mcp** – AutoCAD LT integration via AutoLISP. Informed the development of `freecad-pid-workbench`, which achieves similar P&ID editing capabilities with open-source FreeCAD and machine-readable DEXPI XML.
-- **mathcad-mcp** – MathCAD Prime COM automation. Explored programmatic calculation workflows; insights shaped the Markdown + LaTeX reporting approach now used across MCP servers.
-
-These integrations validated core MCP patterns and informed the architecture of their open-source counterparts.
-
-## Technical Patterns
-
-- **Aqueous chemistry**: PHREEQC via PhreeqPython for thermodynamically rigorous water chemistry
-- **Biological process modeling**: QSDsan for aerobic (mASM2d) and anaerobic (mADM1) process modeling with validated kinetics and stoichiometry
-- **Process costing**: Integration with public costing databases (QSDsan, WaterTAP, EPA) for CAPEX/OPEX analysis and life cycle cost calculations
-- **Thermodynamic properties**: CoolProp, Thermo, and Fluids libraries with NIST-validated correlations
-- **Framework**: FastMCP for rapid MCP server development
-- **Validation**: Physics-based calculations with literature-sourced parameters rather than empirical approximations
-
-## Reporting
+<details>
+<summary><strong>Reporting Architecture</strong></summary>
 
 Engineering MCP servers generate **Markdown reports** with:
-- **Obsidian frontmatter** for metadata and searchability via Obsidian MCP server
+- **Obsidian frontmatter** for metadata and searchability
 - **Mermaid diagrams** for process flowsheets
-- **LaTeX equations** for engineering calculations with symbolic notation
+- **LaTeX equations** for engineering calculations
 
 Rationale:
-1. **LLM-native format** - Markdown is the native "word processor" for AI agents, enabling seamless reading/writing without parsing overhead
-2. **Git version control** - Plain text reports are diffable, enabling standard version control workflows for design artifacts (track changes, rollbacks, blame)
-3. **Cross-platform readability** - Reports render in GitHub, VS Code, Obsidian, and any text editor without proprietary software
-4. **Programmatic organization** - Global Obsidian MCP server provides semantic search and organization across all design artifacts via frontmatter metadata
-5. **Client deliverable conversion** - When client-facing deliverables require traditional formats, Pandoc converts Markdown reports to branded PDF, Word, or PowerPoint documents using custom templates. This preserves Markdown as the version-controlled source of truth while enabling professional formatting for external stakeholders.
+1. **LLM-native format** - Seamless read/write without parsing overhead
+2. **Git version control** - Diffable design artifacts
+3. **Cross-platform** - Renders in GitHub, VS Code, Obsidian
+4. **Client conversion** - Pandoc to PDF/Word/PowerPoint when needed
 
-This replaces traditional .docx/.xlsx reporting, which requires binary diff tools and lacks the compositional properties needed for AI-driven workflows.
+</details>
 
-## Rationale
+---
 
-Domain experts should explore design space, solve complex problems, and anticipate edge cases—not perform routine calculations. AI agents handle:
-- Parametric iterations across operating conditions
-- Calculation reports and technical drawings
-- Compliance documentation
-- Cross-domain result integration
-- Version-controlled engineering artifacts
-
-The **knowledge-base-mcp** provides context retrieval, enabling agents to explain designs with provenance-backed citations.
+*Puran Water LLC • [puranwater.com](https://www.puranwater.com) • opensource@puranwater.com*
