@@ -71,11 +71,21 @@ Engineering drawings follow a database-first architecture where machine-readable
 ### Knowledge Infrastructure
 - **knowledge-base-mcp** – Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools, and optional graph/link-out features.
 
-### Private (in development)
-- **plant-state** – Orchestrator coordination layer for end-to-end plant-state-aware workflows with a suite of accompanying agent skills for engineering artifact production.
-- **evaporator-design-mcp**, **anaerobic-design-mcp**, **aerobic-design-mcp**, **primary-clarification-mcp** – Advanced process unit models; private and still under active build-out.
-- **compliance-agent** – Regulatory monitoring and permit automation; private/in development.
-- **tia-portal-mcp** – Siemens TIA Portal read-only SCADA interface; private/in development.
+### In Development (Public)
+
+> **Note**: These repositories are under active development. APIs may change without notice. Not recommended for production use.
+
+- **anaerobic-design-mcp** – mADM1 (63 components) anaerobic digester design with EBPR, sulfur chemistry, iron redox, and QSDsan integration.
+- **aerobic-design-mcp** – Aerobic biological treatment design with MBR technology and ASM2d kinetics.
+- **qsdsan-engine-mcp** – Universal QSDsan simulation engine exposing process models through MCP adapters.
+- **watertap-engine-mcp** – WaterTAP simulation engine for RO, NF, crystallizers, evaporators, and biological treatment.
+- **primary-clarification-mcp** – Primary clarifier design with chemical addition, coagulation/flocculation, and ASM2d state integration.
+- **tia-portal-mcp** – Siemens TIA Portal read-only interface for SCADA/PLC configuration queries.
+- **evaporator-design-mcp** – Thermal evaporator design for ZLD and brine concentration applications.
+- **mixing-cfd-mcp** – Universal CFD-based mixing analysis across hydraulic, pneumatic, and mechanical technologies.
+
+### Private
+Business development tools, regulatory compliance platforms, and Agent Skills for instructing agents on the use of MCP server tools in engineering workflows are kept private.
 
 ### Proof of Concept
 
