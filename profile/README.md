@@ -4,7 +4,7 @@ AI-native wastewater process engineering. Wastewater process engineering tools w
 
 ## The Operating Model
 
-Puran Water builds the digital infrastructure for an industrial wastewater design-build-operate firm. The architecture rests on a central thesis: an AI-native industrial firm needs a properly schema'd data substrate — not a memory system or RAG pipeline bolted on later.
+Puran Water builds the digital infrastructure for an industrial wastewater design-build-operate firm. The architecture rests on a central thesis: an AI-native industrial firm needs a properly schema'd data substrate first — not a memory system or RAG pipeline as the primary knowledge store.
 
 That substrate comes from three sources: self-hosted enterprise OSS (each brings a Postgres-backed domain ontology), purpose-built engineering schemas (31-component plant-state model, ~110 process unit types, ISA 5.1 instrumentation, DEXPI equipment classes, model credibility metadata), and custom domain schemas (procurement, bid specification review, compliance). All exposed via typed MCP tool surfaces.
 
@@ -24,7 +24,7 @@ The MCP servers in this org are the **tool layer** — the typed interfaces betw
 
 ## Why Engineering Needs Its Own Tool Surface
 
-The MCP ecosystem has grown to 10,000+ servers (as of early 2026). Nearly all are software development tools: databases, browsers, file systems, cloud APIs. While engineering-adjacent MCP servers exist for CAD tools, building energy simulation, and power grid modeling, the wastewater and chemical process engineering domain remains sparse — we are not aware of other MCP servers for activated sludge modeling, membrane process design, anaerobic digestion, or PHREEQC-based water chemistry.
+The MCP ecosystem has grown to 10,000+ servers (as of early 2026). Many are developer and infrastructure oriented: databases, browsers, file systems, cloud APIs. While engineering-adjacent MCP servers exist for CAD tools, building energy simulation, and power grid modeling, the wastewater and chemical process engineering domain remains sparse — we are not aware of other MCP servers for activated sludge modeling, membrane process design, anaerobic digestion, or PHREEQC-based water chemistry.
 
 This gap matters. Industrial process engineering has properties that generic AI tooling cannot address:
 
@@ -34,7 +34,7 @@ This gap matters. Industrial process engineering has properties that generic AI 
 
 - **Results carry credibility.** A preliminary heuristic sizing and a validated dynamic simulation both produce a number. They have fundamentally different reliability. Every simulation result must carry explicit metadata: model status (validated/calibrated/heuristic/preliminary/stub), decision grade (design/budgetary/screening/order-of-magnitude), and validation basis (bench-tested/plant-data/literature/vendor/assumed).
 
-- **Formats must be machine-readable and standards-aligned.** P&IDs as DEXPI XML (ISO 15926), process flows as SFILES text, equipment tagged per ISA 5.1, hierarchy per ISA-95. Not PDFs. Not screenshots. Structured data that agents can read, write, diff, and validate.
+- **Formats must be machine-readable and standards-aligned.** P&IDs as DEXPI XML, using DEXPI's vendor-neutral model and ISO 15926-aligned reference concepts. Process flows as SFILES text. Equipment tagged per ISA 5.1, hierarchy per ISA-95. Not PDFs. Not screenshots. Structured data that agents can read, write, diff, and validate.
 
 These properties require purpose-built MCP servers — typed tool surfaces over physics-based simulation engines, not wrappers around chat APIs.
 
@@ -43,7 +43,7 @@ These properties require purpose-built MCP servers — typed tool surfaces over 
 | Principle | Rationale |
 |-----------|-----------|
 | **Open-Source Stack** | All dependencies are freely available. No proprietary CAD, process simulation, or engineering software licenses required. Enables reproducibility. |
-| **Machine-Readable Formats** | P&IDs as DEXPI XML, process flows as SFILES text, calculations as JSON, reports as Markdown. No binary blobs. |
+| **Machine-Readable Formats** | P&IDs as DEXPI XML (vendor-neutral, ISO 15926-aligned), process flows as SFILES text, calculations as JSON, reports as Markdown. No binary blobs. |
 | **Git-Native Workflows** | All artifacts are text-diffable. Track changes, rollback errors, review engineering deliverables like code. |
 | **Physics-Based Calculations** | Deterministic correlations from literature and open-source simulation engines, not black-box approximations. Full auditability for safety-critical systems. |
 
@@ -57,16 +57,16 @@ Engineering MCP servers generate Markdown reports with LaTeX equations for calcu
 
 ## Repositories
 
-Most engineering MCP servers have been consolidated into the PuranOS monorepo. The public repos below represent their standalone development and remain available as reference.
+Most engineering MCP servers have been consolidated into the PuranOS monorepo. The public repos below represent their standalone development and remain available as reference. Several are under active development and not yet production-ready — individual repo READMEs note their maturity status.
 
 ### Foundational Engineering
 
 | Server | Domain | OSS Equivalent Of | Key Capabilities |
 |--------|--------|-------------------|-----------------|
-| **fluids-mcp** | Hydraulics | AFT Fathom, Pipe-FLO | Pipe flow, valve sizing (IEC 60534), pump/compressor design, CoolProp/Thermo/Fluids property lookups |
+| **fluids-mcp** | Hydraulics | AFT Fathom, Pipe-FLO | Pipe flow, valve sizing (IEC 60534), pump/compressor design, CoolProp + open-source property libraries (`thermo`, `fluids`) |
 | **heat-transfer-mcp** | Thermal analysis | HTRI Xchanger Suite | Tank/pipe heat loss, HX design, weather-driven sizing, 390+ material database |
 | **water-chemistry-mcp** | Aqueous chemistry | OLI Studio | PHREEQC speciation, chemical addition/mixing, scaling analysis, batch processing |
-| **corrosion-engineering-mcp** | Corrosion prediction | In-house spreadsheets | CO2/H2S sweet/sour (NORSOK M-506), 48-entry ASTM G82 galvanic series, pitting assessment (PREN + Butler-Volmer) |
+| **corrosion-engineering-mcp** | Corrosion prediction | In-house spreadsheets | CO2/H2S sweet/sour (NORSOK M-506), 48-entry galvanic series (ASTM G82 guidance), pitting assessment (PREN + Butler-Volmer) |
 
 ### Process Unit Design
 
@@ -92,11 +92,11 @@ These engines maintain session state across agent interactions, support cross-en
 
 | Server | Domain | Key Capabilities |
 |--------|--------|-----------------|
-| **dexpi-sfiles-mcp-server** | P&ID and BFD/PFD | ISO 15926-compliant DEXPI tooling, Proteus XML export, SFILES topology, Git-native persistence |
-| **freecad-pid-workbench** | P&ID editing | FreeCAD-based DEXPI Proteus XML 4.2 import/export, 272 equipment classes, ELK orthogonal layout, round-trip fidelity for human-in-the-loop review |
+| **dexpi-sfiles-mcp-server** | P&ID and BFD/PFD | DEXPI XML tooling with ISO 15926-aligned reference concepts, legacy Proteus XML export, SFILES topology, Git-native persistence |
+| **freecad-pid-workbench** | P&ID editing | FreeCAD-based DEXPI XML import/export (Proteus XML 4.2 for backward compatibility), 272 equipment classes, ELK orthogonal layout, round-trip fidelity for human-in-the-loop review |
 | **site-fit-mcp-server** | Site layout | Constraint-based optimization (OR-Tools CP-SAT), NFPA 820 hazardous area classification, GeoJSON export |
 
-> `freecad-pid-workbench` represents the strategic direction for P&ID editing — fully open-source FreeCAD with machine-readable DEXPI XML, enabling git-based version control and AI-agent-accessible diagram editing.
+> `freecad-pid-workbench` represents the strategic direction for P&ID editing — fully open-source FreeCAD with DEXPI XML as the primary serialization, enabling git-based version control and AI-agent-accessible diagram editing.
 
 ### Knowledge Infrastructure
 
@@ -114,9 +114,9 @@ Early explorations that validated MCP patterns with proprietary engineering tool
 | Pattern | Implementation |
 |---------|---------------|
 | Aqueous chemistry | PHREEQC via PhreeqPython — thermodynamically rigorous speciation and equilibrium |
-| Biological modeling | QSDsan — mASM2d (aerobic) and mADM1 (anaerobic) with validated kinetics and stoichiometry |
-| Process costing | QSDsan, WaterTAP, and EPA costing databases for CAPEX/OPEX and life cycle cost |
-| Thermodynamic properties | CoolProp, Thermo, Fluids — NIST-validated correlations |
+| Biological modeling | QSDsan implementations of established process models including mASM2d (aerobic) and Modified ADM1 (anaerobic); validation status depends on calibration and use case |
+| Process costing | QSDsan TEA/LCA, WaterTAP integrated costing, and EPA Safe Drinking Water Act WBS cost models for CAPEX/OPEX estimation |
+| Thermodynamic properties | CoolProp (literature-backed, reference-validated correlations) plus open-source property libraries (`thermo`, `fluids`) |
 | Engineering reports | Markdown with LaTeX equations, Mermaid diagrams, Obsidian frontmatter |
 | MCP framework | FastMCP for server development |
 | Validation | Physics-based calculations with literature-sourced parameters, not empirical approximations |
