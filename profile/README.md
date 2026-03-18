@@ -6,33 +6,33 @@ AI-native wastewater process engineering. Wastewater process engineering tools w
 
 Puran Water builds the digital infrastructure for an industrial wastewater design-build-operate firm. The architecture rests on a central thesis: an AI-native industrial firm needs a properly schema'd data substrate first — not a memory system or RAG pipeline as the primary knowledge store.
 
-That substrate comes from three sources: self-hosted enterprise OSS (each brings a Postgres-backed domain ontology), purpose-built engineering schemas (31-component plant-state model, ~110 process unit types, ISA 5.1 instrumentation, DEXPI equipment classes, model credibility metadata), and custom domain schemas (procurement, bid specification review, compliance). All exposed via typed MCP tool surfaces.
+That substrate comes from three sources: self-hosted enterprise OSS (each brings a Postgres-backed domain ontology), purpose-built engineering schemas (plant-state model, process unit types, ISA 5.1 instrumentation, DEXPI equipment classes, model credibility metadata), and custom domain schemas (procurement, process datasheets, bid specifications, compliance). All exposed via typed MCP tool surfaces.
 
 ```
 External systems and human operators
             |
 Communication / orchestration runtime
             |
-Persona layer (21 role-scoped agents) + reusable skills (46 workflows)
+Persona layer (role-scoped agents) + reusable skills
             |
-MCP server layer (21 server codebases)       <-- this org
+MCP server layer (server codebases)       <-- this org
             |
-Business systems + engineering engines (QSDsan, WaterTAP, PHREEQC)
+Business systems + engineering engines
 ```
 
 The MCP servers in this org are the **tool layer** — the typed interfaces between AI agents and deterministic engineering computation. They sit within a larger operating system that includes project management, CRM, procurement, compliance, and autonomous orchestration, documented in **[PuranOS-public](https://github.com/puran-water/PuranOS-public)**.
 
 ## Why Engineering Needs Its Own Tool Surface
 
-The MCP ecosystem has grown to 10,000+ servers (as of early 2026). Many are developer and infrastructure oriented: databases, browsers, file systems, cloud APIs. While engineering-adjacent MCP servers exist for CAD tools, building energy simulation, and power grid modeling, the wastewater and chemical process engineering domain remains sparse — we are not aware of other MCP servers for activated sludge modeling, membrane process design, anaerobic digestion, or PHREEQC-based water chemistry.
+The MCP ecosystem has grown to 10,000+ servers (as of early 2026). Many are developer and infrastructure oriented: databases, browsers, file systems, cloud APIs. While engineering-adjacent MCP servers exist for CAD tools, building energy simulation, and power grid modeling, the wastewater and chemical process engineering domain remains sparse.
 
 This gap matters. Industrial process engineering has properties that generic AI tooling cannot address:
 
-- **Calculations must be deterministic and auditable.** A pump sizing is not a language task. It is a physics problem with a verifiable answer. LLM-generated numbers are not acceptable for engineering design — the calculation must be reproducible and traceable to published correlations or validated simulation models.
+- **Calculations must be deterministic and auditable.** A pump sizing is not a language task. It is an engineering problem with a verifiable answer. LLM-generated numbers are not acceptable for engineering design — the calculation must be reproducible and traceable to published correlations or validated simulation models.
 
-- **Models chain across engines.** A treatment train flows from biological treatment (QSDsan, mASM2d basis) through solids handling (QSDsan, mADM1 basis) to membrane separation (WaterTAP, MCAS basis) to costing. Each stage uses a different component model. Typed converters with provenance tracking are required at every handoff.
+- **Models chain across engines.** A treatment train flows from biological treatment (QSDsan, mASM2d plant state) through reverse osmosis (WaterTAP, MCAS plant state). Sizing, simulating, and costing a flowsheet requires typed converters with provenance tracking at every handoff.
 
-- **Results carry credibility.** A preliminary heuristic sizing and a validated dynamic simulation both produce a number. They have fundamentally different reliability. Every simulation result must carry explicit metadata: model status (validated/calibrated/heuristic/preliminary/stub), decision grade (design/budgetary/screening/order-of-magnitude), and validation basis (bench-tested/plant-data/literature/vendor/assumed).
+- **Results carry credibility.** A preliminary heuristic sizing, an uncalibrated simulation, and a calibrated dynamic simulation all produce a plant state. They have fundamentally different reliability. Every simulation result must carry explicit metadata: model status (calibrated/preliminary), decision grade (design/budgetary), and validation basis (bench-test/plant-data/literature/vendor/assumed).
 
 - **Formats must be machine-readable and standards-aligned.** P&IDs as DEXPI XML, using DEXPI's vendor-neutral model and ISO 15926-aligned reference concepts. Process flows as SFILES text. Equipment tagged per ISA 5.1, hierarchy per ISA-95. Not PDFs. Not screenshots. Structured data that agents can read, write, diff, and validate.
 
@@ -57,7 +57,7 @@ Engineering MCP servers generate Markdown reports with LaTeX equations for calcu
 
 ## Repositories
 
-Most engineering MCP servers have been consolidated into the PuranOS monorepo. The public repos below represent their standalone development and remain available as reference. Several are under active development and not yet production-ready — individual repo READMEs note their maturity status.
+Most engineering MCP servers have been consolidated into the PuranOS monorepo. The public repos represent their standalone development at the point-in-time of consolidation and remain available as reference. Several were under active development and not yet production-ready — individual repo READMEs note their maturity status.
 
 ### Foundational Engineering
 
@@ -127,7 +127,7 @@ The MCP servers are one layer. The full operating system — documented in **[Pu
 
 - **[Schema'd state over memory](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/schema-over-memory.md)** — enterprise OSS schemas + engineering schemas + custom domain schemas as the primary knowledge substrate
 - **[OpenProject as coordination substrate](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/coordination-substrate.md)** — shared board for human+AI task delegation, backed by agent coordination research
-- **[Skills as captured expertise](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/skills-as-expertise.md)** — 46 reusable workflows that compound institutional knowledge
+- **[Skills as captured expertise](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/skills-as-expertise.md)** — reusable workflows that compound institutional knowledge
 - **[First-class engineering computation](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/engineering-engines.md)** — session-persistent engines with credibility metadata and typed cross-engine handoffs
 - **[Standards alignment](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/standards-and-conformance.md)** — DEXPI, ISA-95, ISA 5.1, CFIHOS, OPC UA
 - **[Research backing](https://github.com/puran-water/PuranOS-public/blob/main/docs/research/README.md)** — llmenron, StateFlow, Agent Workflow Memory, and counter-evidence
