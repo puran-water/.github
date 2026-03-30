@@ -61,12 +61,12 @@ Most engineering MCP servers have been consolidated into the PuranOS monorepo. T
 
 ### Foundational Engineering
 
-| Server | Domain | OSS Equivalent Of | Key Capabilities |
+| Server | Domain | Key Capabilities |
 |--------|--------|-------------------|-----------------|
-| **fluids-mcp** | Hydraulics | AFT Fathom, Pipe-FLO | Pipe flow, valve sizing (IEC 60534), pump/compressor design, CoolProp + open-source property libraries (`thermo`, `fluids`) |
-| **heat-transfer-mcp** | Thermal analysis | HTRI Xchanger Suite | Tank/pipe heat loss, HX design, weather-driven sizing, 390+ material database |
-| **water-chemistry-mcp** | Aqueous chemistry | OLI Studio | PHREEQC speciation, chemical addition/mixing, scaling analysis, batch processing |
-| **corrosion-engineering-mcp** | Corrosion prediction | In-house spreadsheets | CO2/H2S sweet/sour (NORSOK M-506), 48-entry galvanic series (ASTM G82 guidance), pitting assessment (PREN + Butler-Volmer) |
+| **fluids-mcp** | Hydraulics | Pipe flow, valve sizing (IEC 60534), pump/compressor design, CoolProp + open-source property libraries (`thermo`, `fluids`) |
+| **heat-transfer-mcp** | Thermal analysis | Tank/pipe heat loss, HX design, weather-driven sizing, 390+ material database |
+| **water-chemistry-mcp** | Aqueous chemistry | PHREEQC speciation, chemical addition/mixing, scaling analysis, batch processing |
+| **corrosion-engineering-mcp** | Corrosion prediction | CO2/H2S sweet/sour (NORSOK M-506), 48-entry galvanic series (ASTM G82 guidance), pitting assessment (PREN + Butler-Volmer) |
 
 ### Process Unit Design
 
@@ -81,10 +81,10 @@ Most engineering MCP servers have been consolidated into the PuranOS monorepo. T
 
 ### Engineering Simulation Engines
 
-| Engine | OSS Equivalent Of | Architecture |
+| Engine | Architecture |
 |--------|-------------------|-------------|
-| **qsdsan-engine-mcp** | BioWin, GPS-X, Sumo | Session-persistent biological/chemical simulation, multi-model-family (heuristic through dynamic), mASM2d/mADM1 component bases, credibility-tagged results |
-| **watertap-engine-mcp** | ROSA, WAVE, IMS Design | Session-persistent membrane/separation flowsheets, RO/NF/crystallizer/evaporator units, integrated costing, MCAS component basis |
+| **qsdsan-engine-mcp** | Session-persistent biological/chemical simulation, multi-model-family (heuristic through dynamic), mASM2d/mADM1 component bases, credibility-tagged results |
+| **watertap-engine-mcp** | Session-persistent membrane/separation flowsheets, RO/NF/crystallizer/evaporator units, integrated costing, MCAS component basis |
 
 These engines maintain session state across agent interactions, support cross-engine handoffs via typed component-basis converters, and tag every result with model credibility metadata. A shared engineering library provides deterministic converters between component bases (mASM2d, MCAS, mADM1) with provenance tracking, along with shared Pydantic models for equipment items, credibility, and stream state. Inter-agent process data flows via filesystem JSON files conforming to the plant-state schema, validated by the StreamState model and an arithmetic mass balance checker — replacing the need for a dedicated state-management server.
 
