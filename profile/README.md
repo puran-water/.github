@@ -62,7 +62,7 @@ Most engineering MCP servers have been consolidated into the PuranOS monorepo. T
 ### Foundational Engineering
 
 | Server | Domain | Key Capabilities |
-|--------|--------|-------------------|-----------------|
+|--------|--------|-------------------|
 | **fluids-mcp** | Hydraulics | Pipe flow, valve sizing (IEC 60534), pump/compressor design, CoolProp + open-source property libraries (`thermo`, `fluids`) |
 | **heat-transfer-mcp** | Thermal analysis | Tank/pipe heat loss, HX design, weather-driven sizing, 390+ material database |
 | **water-chemistry-mcp** | Aqueous chemistry | PHREEQC speciation, chemical addition/mixing, scaling analysis, batch processing |
@@ -71,7 +71,7 @@ Most engineering MCP servers have been consolidated into the PuranOS monorepo. T
 ### Process Unit Design
 
 | Server | Domain | Key Capabilities |
-|:---|:---|:---|
+|--------|--------|-------------------|
 | **ro-design-mcp** | Reverse osmosis | Hybrid simulator, PHREEQC chemistry, WaterTAP costing |
 | **ix-design-mcp** | Ion exchange | SAC/WAC sizing, Gaines-Thomas heuristics, PHREEQC breakthrough modeling, WaterTAP costing |
 | **degasser-design-mcp** | Air stripping | Packed tower design with PHREEQC speciation, HTU/NTU sizing, staged simulation |
@@ -82,7 +82,7 @@ Most engineering MCP servers have been consolidated into the PuranOS monorepo. T
 ### Engineering Simulation Engines
 
 | Engine | Architecture |
-|--------|-------------------|-------------|
+|--------|-------------------|
 | **qsdsan-engine-mcp** | Session-persistent biological/chemical simulation, multi-model-family (heuristic through dynamic), mASM2d/mADM1 component bases, credibility-tagged results |
 | **watertap-engine-mcp** | Session-persistent membrane/separation flowsheets, RO/NF/crystallizer/evaporator units, integrated costing, MCAS component basis |
 
