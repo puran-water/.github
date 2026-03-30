@@ -71,7 +71,7 @@ Most engineering MCP servers have been consolidated into the PuranOS monorepo. T
 ### Process Unit Design
 
 | Server | Domain | Key Capabilities |
-|--------|--------|-----------------|
+|:---|:---|:---|
 | **ro-design-mcp** | Reverse osmosis | Hybrid simulator, PHREEQC chemistry, WaterTAP costing |
 | **ix-design-mcp** | Ion exchange | SAC/WAC sizing, Gaines-Thomas heuristics, PHREEQC breakthrough modeling, WaterTAP costing |
 | **degasser-design-mcp** | Air stripping | Packed tower design with PHREEQC speciation, HTU/NTU sizing, staged simulation |
