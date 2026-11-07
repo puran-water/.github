@@ -1,143 +1,63 @@
-![Puran Water](assets/logo.png)
+# Puran Water · Engineering that remembers
 
-AI-native wastewater process engineering. Wastewater process engineering tools with schema'd state and deterministic simulation engines, designed for programmatic access by AI agents.
+We provide industrial water, wastewater and waste-to-value process engineering, equipment support and operating investigations. **PuranOS** is the working system behind that service: specialist agents call engineering code, retain the basis and carry reviewed results into the next stage of a project.
 
-## The Operating Model
+[Work with Puran Water](https://puranwater.com/contact/) · [Explore the working system](https://github.com/puran-water/PuranOS-public) · [Try an engineering tool](#public-engineering-tools)
 
-Puran Water builds the digital infrastructure for an industrial wastewater design-build-operate firm. The architecture rests on a central thesis: an AI-native industrial firm needs a properly schema'd data substrate first — not a memory system or RAG pipeline as the primary knowledge store.
+## One engineering basis, from proposal to basic engineering
 
-That substrate comes from three sources: self-hosted enterprise OSS (each brings a Postgres-backed domain ontology), purpose-built engineering schemas (plant-state model, process unit types, ISA 5.1 instrumentation, DEXPI equipment classes, model credibility metadata), and custom domain schemas (procurement, process datasheets, bid specifications, compliance). All exposed via typed MCP tool surfaces.
+`/sizing-to-balance` is the engineering core of `/proposal-workflow` and the starting package for `/bep-workflow`. It connects unit coverage, heuristic sizing, appropriate simulation, recycle convergence and whole-plant material and heat accounting. Equipment schedules and drawings read the retained engineering basis. Computed requirements, client-provided values, assumptions and unresolved inputs remain distinguishable.
 
+```mermaid
+flowchart TD
+  A[Project basis and owner decisions] --> B[Unit coverage and heuristic sizing]
+  B --> C[Appropriate process models and recycle convergence]
+  C --> D[Verified balance and retained engineering package]
+  D --> E[Proposal: technical narrative and commercial scope]
+  D --> F[BEP: coordinated discipline design and review]
+  D --> G[Studio: drawings, concept geometry and linked evidence]
+  E --> H[Authorized review and release]
+  F --> H
 ```
-External systems and human operators
-            |
-Communication / orchestration runtime
-            |
-Persona layer (role-scoped agents) + reusable skills
-            |
-MCP server layer (server codebases)       <-- this org
-            |
-Business systems + engineering engines
-```
 
-The MCP servers in this org are the **tool layer** — the typed interfaces between AI agents and deterministic engineering computation. They sit within a larger operating system that includes project management, CRM, procurement, compliance, and autonomous orchestration, documented in **[PuranOS-public](https://github.com/puran-water/PuranOS-public)**.
+`/proposal-workflow` carries that basis into a technical proposal and commercial offer for review. `/bep-workflow` starts from its sealed engineering package and coordinates discipline work, checks and the Basic Engineering Package. The owner controls process selections, exceptions and release. These are internal working procedures, described publicly; installing one MCP server does not install the complete workflow.
 
-## Why Engineering Needs Its Own Tool Surface
+## PuranOS Studio
 
-The MCP ecosystem has grown to 10,000+ servers (as of early 2026). Many are developer and infrastructure oriented: databases, browsers, file systems, cloud APIs. While engineering-adjacent MCP servers exist for CAD tools, building energy simulation, and power grid modeling, the wastewater and chemical process engineering domain remains sparse.
+Studio brings a retained engineering publication into a browser: process drawings, review-stage concept geometry, equipment properties, sizing basis and supporting lists. Linked selections connect appearances to the same engineering identity. R1 supports the BFD and balance review; R2 carries PFDs and coordinated lists; R3 brings P&IDs, concept geometry and the line list together.
 
-This gap matters. Industrial process engineering has properties that generic AI tooling cannot address:
+Each publication identifies its source revision and review gate. Studio displays retained evidence; it does not calculate a new design or confer issue authority. Project access is controlled. [Studio and its review model](https://github.com/puran-water/PuranOS-public/blob/main/docs/studio.md).
 
-- **Calculations must be deterministic and auditable.** A pump sizing is not a language task. It is an engineering problem with a verifiable answer. LLM-generated numbers are not acceptable for engineering design — the calculation must be reproducible and traceable to published correlations or validated simulation models.
+![PuranOS Studio live held review with identifying labels and detailed values concealed](https://raw.githubusercontent.com/puran-water/.github/main/profile/assets/studio-review.png)
 
-- **Models chain across engines.** A treatment train flows from biological treatment (QSDsan, mASM2d plant state) through reverse osmosis (WaterTAP, MCAS plant state). Sizing, simulating, and costing a flowsheet requires typed converters with provenance tracking at every handoff.
+*Live Studio interface, captured for this overview. Project identifiers and detailed values are concealed. The publication remains a held review with unresolved conditions; it is not an issued design.*
 
-- **Results carry credibility.** A preliminary heuristic sizing, an uncalibrated simulation, and a calibrated dynamic simulation all produce a plant state. They have fundamentally different reliability. Every simulation result must carry explicit metadata: model status (calibrated/preliminary), decision grade (design/budgetary), and validation basis (bench-test/plant-data/literature/vendor/assumed).
+## The specialist team
 
-- **Formats must be machine-readable and standards-aligned.** P&IDs as DEXPI XML, using DEXPI's vendor-neutral model and ISO 15926-aligned reference concepts. Process flows as SFILES text. Equipment tagged per ISA 5.1, hierarchy per ISA-95. Not PDFs. Not screenshots. Structured data that agents can read, write, diff, and validate.
+Process, CAD, civil, piping, mechanical, structural, electrical, automation, EHS and municipal-water roles have separate responsibilities. Separation specialists advise on technologies and vendor evidence; narrative and deliverables specialists turn accepted records into usable documents. Cost estimation, procurement, project management, finance and maintenance connect the engineering to delivery and operations.
 
-These properties require purpose-built MCP servers — typed tool surfaces over physics-based simulation engines, not wrappers around chat APIs.
+The owner coordinates the work, with `pe-process` running the proposal and BEP procedures. The former `pe-lead` persona is retired. Specialist configurations describe responsibilities; access comes from the tools and permissions actually assigned to a run. [Current personas and handoffs](https://github.com/puran-water/PuranOS-public/blob/main/docs/architecture/personas/README.md).
 
-## Core Principles
+## Public engineering tools
 
-| Principle | Rationale |
-|-----------|-----------|
-| **Open-Source Stack** | All dependencies are freely available. No proprietary CAD, process simulation, or engineering software licenses required. Enables reproducibility. |
-| **Machine-Readable Formats** | P&IDs as DEXPI XML (vendor-neutral, ISO 15926-aligned), process flows as SFILES text, calculations as JSON, reports as Markdown. No binary blobs. |
-| **Git-Native Workflows** | All artifacts are text-diffable. Track changes, rollback errors, review engineering deliverables like code. |
-| **Physics-Based Calculations** | Deterministic correlations from literature and open-source simulation engines, not black-box approximations. Full auditability for safety-critical systems. |
+These repositories contain standalone experimental releases and receive scoped updates from the working monorepo. They return numerical results and structured evidence; the calling agent supplies interpretation and reporting.
 
-## Core Architecture
+| Repository | Use it for |
+| --- | --- |
+| [fluids-mcp](https://github.com/puran-water/fluids-mcp) | Pipe flow, pipe and valve sizing, fluid properties and bounded sweeps. |
+| [heat-transfer-mcp](https://github.com/puran-water/heat-transfer-mcp) | Heat exchangers, air cooling, heat loss, insulation and thermal properties. |
+| [water-chemistry-mcp](https://github.com/puran-water/water-chemistry-mcp) | PHREEQC speciation, mixing, saturation and chemical-dosing screens. |
+| [corrosion-engineering-mcp](https://github.com/puran-water/corrosion-engineering-mcp) | Corrosion chemistry and model-specific screening with applicability limits. |
+| [qsdsan-engine-mcp](https://github.com/puran-water/qsdsan-engine-mcp) | Dynamic treatment-process simulation, job state and numerical time series. |
+| [watertap-engine-mcp](https://github.com/puran-water/watertap-engine-mcp) | Steady-state flowsheets using WaterTAP, IDAES and Pyomo with solver diagnostics. |
+Start with each repository's quick start, MCP client configuration, known issues and licence notices. `v0.1.0` is an immutable initial release; `main` follows reviewed development. Git installs are documented. The public support package is distributed in the [fluids repository](https://github.com/puran-water/fluids-mcp/tree/main/support/puran-mcp-support).
 
-These tools implement the Model Context Protocol (MCP), providing structured JSON interfaces for deterministic engineering calculations. AI agents compose multi-step workflows by calling tools programmatically rather than requiring human operators to navigate graphical interfaces.
+Additional public tools include [AutoCAD/DXF automation](https://github.com/puran-water/autocad-mcp), the [FreeCAD integration fork](https://github.com/puran-water/freecad-mcp), and the [pandid drawing fork](https://github.com/puran-water/pandid). Their own documentation defines their scope, upstream attribution and platform requirements. Archived repositories are historical snapshots, not the current monorepo implementation.
 
-Engineering drawings follow a database-first architecture where machine-readable data models (DEXPI for P&IDs, SFILES for BFDs/PFDs) generate visualizations. This inverts the traditional CAD workflow, enabling version control via git and automated diff operations on the underlying data structures.
+## How real work improves the tools
 
-Engineering MCP servers generate Markdown reports with LaTeX equations for calculation traceability, Mermaid diagrams for process flowsheets, and Obsidian frontmatter for searchable metadata. This preserves Markdown as the version-controlled source of truth while enabling conversion to client-deliverable formats via Pandoc.
+A workflow exposes a missing check or model limitation. The correction lands in the monorepo and becomes available to later work. The public mirror exports the approved package scope, checks private content, secrets and redistribution rights, then advances the public branch. Pinned project runs retain their earlier code and evidence until a deliberate revision adopts a change.
 
-## Repositories
+PuranOS combines open-source libraries with Puran engineering code and, where a workflow needs them, separately licensed tools. The full monorepo, customer records, vendor evidence and internal commercial authority are not part of these public packages. [Architecture, workflows and access](https://github.com/puran-water/PuranOS-public).
 
-Most engineering MCP servers have been consolidated into the PuranOS monorepo. The public repos represent their standalone development at the point-in-time of consolidation and remain available as reference. Several were under active development and not yet production-ready — individual repo READMEs note their maturity status.
-
-### Foundational Engineering
-
-| Server | Domain | Key Capabilities |
-|--------|--------|-------------------|
-| **fluids-mcp** | Hydraulics | Pipe flow, valve sizing (IEC 60534), pump/compressor design, CoolProp + open-source property libraries (`thermo`, `fluids`) |
-| **heat-transfer-mcp** | Thermal analysis | Tank/pipe heat loss, HX design, weather-driven sizing, 390+ material database |
-| **water-chemistry-mcp** | Aqueous chemistry | PHREEQC speciation, chemical addition/mixing, scaling analysis, batch processing |
-| **corrosion-engineering-mcp** | Corrosion prediction | CO2/H2S sweet/sour (NORSOK M-506), 48-entry galvanic series (ASTM G82 guidance), pitting assessment (PREN + Butler-Volmer) |
-
-### Process Unit Design
-
-| Server | Domain | Key Capabilities |
-|--------|--------|-------------------|
-| **ro-design-mcp** | Reverse osmosis | Hybrid simulator, PHREEQC chemistry, WaterTAP costing |
-| **ix-design-mcp** | Ion exchange | SAC/WAC sizing, Gaines-Thomas heuristics, PHREEQC breakthrough modeling, WaterTAP costing |
-| **degasser-design-mcp** | Air stripping | Packed tower design with PHREEQC speciation, HTU/NTU sizing, staged simulation |
-| **adm1-mcp** | Anaerobic digestion | Feedstock-to-ADM1 parameter translation, QSDsan-backed process simulation, methane yield reporting |
-| **evaporator-design-mcp** | Thermal separation | ZLD and brine concentration design |
-| **mixing-cfd-mcp** | CFD mixing | Hydraulic, pneumatic, and mechanical mixing analysis |
-
-### Engineering Simulation Engines
-
-| Engine | Architecture |
-|--------|-------------------|
-| **qsdsan-engine-mcp** | Session-persistent biological/chemical simulation, multi-model-family (heuristic through dynamic), mASM2d/mADM1 component bases, credibility-tagged results |
-| **watertap-engine-mcp** | Session-persistent membrane/separation flowsheets, RO/NF/crystallizer/evaporator units, integrated costing, MCAS component basis |
-
-These engines maintain session state across agent interactions, support cross-engine handoffs via typed component-basis converters, and tag every result with model credibility metadata. A shared engineering library provides deterministic converters between component bases (mASM2d, MCAS, mADM1) with provenance tracking, along with shared Pydantic models for equipment items, credibility, and stream state. Inter-agent process data flows via filesystem JSON files conforming to the plant-state schema, validated by the StreamState model and an arithmetic mass balance checker — replacing the need for a dedicated state-management server.
-
-### Engineering Drawings and Site Layout
-
-| Server | Domain | Key Capabilities |
-|--------|--------|-----------------|
-| **dexpi-sfiles-mcp-server** | P&ID and BFD/PFD | DEXPI XML tooling with ISO 15926-aligned reference concepts, legacy Proteus XML export, SFILES topology, Git-native persistence |
-| **freecad-pid-workbench** | P&ID editing | FreeCAD-based DEXPI XML import/export (Proteus XML 4.2 for backward compatibility), 272 equipment classes, ELK orthogonal layout, round-trip fidelity for human-in-the-loop review |
-| **site-fit-mcp-server** | Site layout | Constraint-based optimization (OR-Tools CP-SAT), NFPA 820 hazardous area classification, GeoJSON export |
-
-> `freecad-pid-workbench` represents the strategic direction for P&ID editing — fully open-source FreeCAD with DEXPI XML as the primary serialization, enabling git-based version control and AI-agent-accessible diagram editing.
-
-### Knowledge Infrastructure
-
-- **knowledge-base-mcp** — Hybrid dense/sparse/rerank retrieval with Docling ingestion, Qdrant + FTS payloads, deterministic upsert tools.
-
-### Proof of Concept
-
-Early explorations that validated MCP patterns with proprietary engineering tools:
-
-- **autocad-mcp** — AutoCAD LT integration via AutoLISP. Informed the development of `freecad-pid-workbench`.
-- **mathcad-mcp** — MathCAD Prime COM automation. Insights shaped the Markdown + LaTeX reporting approach.
-
-## Technical Patterns
-
-| Pattern | Implementation |
-|---------|---------------|
-| Aqueous chemistry | PHREEQC via PhreeqPython — thermodynamically rigorous speciation and equilibrium |
-| Biological modeling | QSDsan implementations of established process models including mASM2d (aerobic) and Modified ADM1 (anaerobic); validation status depends on calibration and use case |
-| Process costing | QSDsan TEA/LCA, WaterTAP integrated costing, and EPA Safe Drinking Water Act WBS cost models for CAPEX/OPEX estimation |
-| Thermodynamic properties | CoolProp (literature-backed, reference-validated correlations) plus open-source property libraries (`thermo`, `fluids`) |
-| Engineering reports | Markdown with LaTeX equations, Mermaid diagrams, Obsidian frontmatter |
-| MCP framework | FastMCP for server development |
-| Validation | Physics-based calculations with literature-sourced parameters, not empirical approximations |
-
-## The Full Architecture
-
-The MCP servers are one layer. The full operating system — documented in **[PuranOS-public](https://github.com/puran-water/PuranOS-public)** — includes:
-
-- **[Schema'd state over memory](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/schema-over-memory.md)** — enterprise OSS schemas + engineering schemas + custom domain schemas as the primary knowledge substrate
-- **[OpenProject as coordination substrate](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/coordination-substrate.md)** — shared board for human+AI task delegation, backed by agent coordination research
-- **[Skills as captured expertise](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/skills-as-expertise.md)** — reusable workflows that compound institutional knowledge
-- **[First-class engineering computation](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/engineering-engines.md)** — session-persistent engines with credibility metadata and typed cross-engine handoffs
-- **[Standards alignment](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/standards-and-conformance.md)** — DEXPI, ISA-95, ISA 5.1, CFIHOS, OPC UA
-- **[Research backing](https://github.com/puran-water/PuranOS-public/blob/main/docs/research/README.md)** — llmenron, StateFlow, Agent Workflow Memory, and counter-evidence
-
-Start with [Schema Over Memory](https://github.com/puran-water/PuranOS-public/blob/main/docs/approach/schema-over-memory.md) to understand the central thesis, or [Architecture Overview](https://github.com/puran-water/PuranOS-public/blob/main/docs/architecture/README.md) for the system structure.
-
-## Contact
-
-- **Puran Water LLC**
-- **Hersh Kshetry**, Founder and Principal Engineer
-- Website: [puranwater.com](https://puranwater.com/)
-- Contact: [puranwater.com/contact](https://puranwater.com/contact/)
-- Schedule a call: [calendar.app.google/M1jzSdCB51sYiWux6](https://calendar.app.google/M1jzSdCB51sYiWux6)
+Bring a project basis, a calculation you want checked or a workflow your team repeats. [Talk to Puran Water](https://puranwater.com/contact/).
